@@ -12,3 +12,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model ShotGlass {
+  id           Int      @id @default(autoincrement())
+  cityEng      String
+  cityUkr      String
+  countryEng   String
+  countryUkr   String
+  continentEng String
+  continentUkr String
+  latitude     String
+  longitude    String
+  imageUrl     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
