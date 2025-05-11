@@ -1,5 +1,8 @@
 {
-    "HomePage": {
-      "title": "залупа"
-    }
+  "Header": {
+    "logo": "Рюмки"
+  },
+  "HomePage": {
+    "title": "залупа"
   }
+}

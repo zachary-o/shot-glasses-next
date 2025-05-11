@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { Locale } from "@/i18n/config"
-import { useTranslations } from "next-intl"
-import { useTransition } from "react"
-import { setUserLocale } from "./services/locale"
-import clsx from "clsx"
+import { Locale } from "@/i18n/config";
+import { useTranslations } from "next-intl";
+import { useTransition } from "react";
+import { setUserLocale } from "./services/locale";
+import clsx from "clsx";
 
 export default function Home() {
-  const t = useTranslations("HomePage")
-  const [isPending, startTransition] = useTransition()
+  const t = useTranslations("HomePage");
+  const [isPending, startTransition] = useTransition();
 
   function onClick(value: string) {
-    const locale = value as Locale
+    const locale = value as Locale;
     startTransition(() => {
-      setUserLocale(locale)
-    })
+      setUserLocale(locale);
+    });
   }
   return (
     <main className="font-normal space-y-4">
@@ -38,7 +38,7 @@ export default function Home() {
           UKR
         </button>
       </div>
-      <h1>{t("title")}</h1>
+      <h1 className="text-[var(--color-red)]">{t("title")}</h1>
     </main>
-  )
+  );
 }

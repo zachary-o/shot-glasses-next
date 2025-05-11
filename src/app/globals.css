@@ -8,6 +8,11 @@ html {
 }
 
 @theme inline {
+  --color-red: #9b0d00;
+  --color-black: #141414;
+}
+
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
