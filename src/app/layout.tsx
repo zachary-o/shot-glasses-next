@@ -1,10 +1,21 @@
 import Header from "@/components/shared/Header"
+import Providers from "@/components/shared/Providers"
 import clsx from "clsx"
 import type { Metadata } from "next"
+import { getLocale, getMessages } from "next-intl/server"
 import localFont from "next/font/local"
 import "./globals.css"
-import { NextIntlClientProvider } from "next-intl"
-import { getLocale, getMessages } from "next-intl/server"
+import { getUserLocale } from "./services/locale"
+import { Toaster } from "@/components/ui/sonner"
+
+const pacifico = localFont({
+  src: "./fonts/Pacifico-Regular.ttf",
+  weight: "400",
+  style: "normal",
+  display: "swap",
+  variable: "--font-pacifico",
+})
+
 const roadUI = localFont({
   src: [
     {
@@ -33,14 +44,19 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const locale = await getLocale()
-  const messages = await getMessages();
+  const messages = await getMessages()
+  const initialLang = await getUserLocale()
+
   return (
-    <html lang={locale} className={clsx(roadUI.variable, "min-h-screen")}>
-      <body className="max-w-[1278px] mx-auto px-6 lg:px-2 lg:pt-[20px]">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
+    <html
+      lang={locale}
+      className={clsx(roadUI.variable, pacifico.variable, "min-h-screen")}
+    >
+      <body className="max-w-[1278px] bg-[#FFFDFA] mx-auto px-6 lg:px-2 lg:pt-[20px]">
+        <Providers locale={locale} messages={messages}>
+          <Header initialLang={initialLang} />
           {children}
-        </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   )

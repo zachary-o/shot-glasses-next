@@ -1,6 +1,10 @@
 {
   "Header": {
-    "logo": "Рюмки"
+    "logo": "Рюмки",
+    "dashboard": "Дешборд",
+    "admin": "Адмінка",
+    "adminLogin": "Адмін Логін",
+    "logout": "Вийти"
   },
   "HomePage": {
     "title": "залупа"

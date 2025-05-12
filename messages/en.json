@@ -1,8 +1,12 @@
 {
-    "Header": {
-      "logo": "Shot Glasses"
-    },
-    "HomePage": {
-      "title": "zaloopa"
-    }
+  "Header": {
+    "logo": "Shot Glasses",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "adminLogin": "Admin Login",
+    "logout": "Lgout"
+  },
+  "HomePage": {
+    "title": "zaloopa"
   }
+}
