@@ -32,7 +32,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
   }
 
   return (
-    <header className="h-18 flex items-center justify-between">
+    <header className="h-18 flex items-center justify-between mb-10">
       {/* LEFT PART */}
       <div className="flex items-center">
         <Link
@@ -91,7 +91,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
             <GlassWater />
           </Button>
         </SheetTrigger>
-        <SheetContent className="bg-[#FFFDFA]">
+        <SheetContent className="bg-[#FFFDFA] w-[300px]">
           <SheetHeader aria-label="Sidebar Title">
             <SheetTitle className="text-[var(--color-red)]">
               {t("menuTitle")}

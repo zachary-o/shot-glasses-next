@@ -9,5 +9,12 @@
   },
   "HomePage": {
     "title": "zaloopa"
+  },
+  "Admin": {
+    "title": "Add a new shot glass",
+    "dragAccept": "C'mon bro, you can do it!",
+    "dragRejected": "I need a picture, bro!",
+    "dragNdrop": "Drag 'n' drop a picture here, or\n",
+    "dragNdropSub": "click to select a file"
   }
 }
