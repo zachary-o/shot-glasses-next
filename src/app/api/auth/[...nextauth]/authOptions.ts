@@ -1,5 +1,5 @@
-import { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { AuthOptions } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -10,8 +10,8 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
-      return user.email === process.env.NEXT_PUBLIC_EMAIL;
+      return user.email === process.env.NEXT_PUBLIC_EMAIL
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+}

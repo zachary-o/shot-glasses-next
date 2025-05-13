@@ -4,7 +4,8 @@
     "dashboard": "Дешборд",
     "admin": "Адмінка",
     "adminLogin": "Адмін Логін",
-    "logout": "Вийти"
+    "logout": "Вийти",
+    "menuTitle": "Навігація по сайту"
   },
   "HomePage": {
     "title": "залупа"

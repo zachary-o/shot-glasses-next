@@ -1,9 +1,8 @@
-'use client';
+"use client"
 
-import { SessionProvider } from "next-auth/react";
-import { NextIntlClientProvider } from "next-intl";
-import { ReactNode } from "react";
-import { Toaster } from "../ui/sonner";
+import { SessionProvider } from "next-auth/react"
+import { NextIntlClientProvider } from "next-intl"
+import { ReactNode } from "react"
 
 const Providers = ({
   children,
@@ -16,9 +15,12 @@ const Providers = ({
 }) => {
   return (
     <SessionProvider>
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={messages}
+        timeZone="Europe/Kyiv"
+      >
         {children}
-        <Toaster />
       </NextIntlClientProvider>
     </SessionProvider>
   )

@@ -4,7 +4,8 @@
     "dashboard": "Dashboard",
     "admin": "Admin",
     "adminLogin": "Admin Login",
-    "logout": "Lgout"
+    "logout": "Lgout",
+    "menuTitle": "Browse the app"
   },
   "HomePage": {
     "title": "zaloopa"
