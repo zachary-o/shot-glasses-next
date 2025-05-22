@@ -1,5 +1,5 @@
+import AdminForm from "@/components/shared/AdminForm"
 import PageTitle from "@/components/shared/PageTitle"
-import PictureUploader from "@/components/shared/PictureUploader"
 import { getServerSession } from "next-auth"
 import { getTranslations } from "next-intl/server"
 import { redirect } from "next/navigation"
@@ -16,9 +16,7 @@ export default async function AdminPage() {
   return (
     <section>
       <PageTitle text={t("title")} />
-      <form action="">
-        <PictureUploader />
-      </form>
+      <AdminForm />
     </section>
   )
 }
