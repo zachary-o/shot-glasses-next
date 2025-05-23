@@ -1,11 +1,5 @@
 import { cva } from "class-variance-authority"
-import {
-  CheckIcon,
-  ChevronDown,
-  WandSparkles,
-  XCircle,
-  XIcon,
-} from "lucide-react"
+import { CheckIcon, ChevronDown, XCircle, XIcon } from "lucide-react"
 import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
@@ -27,22 +21,27 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { MultiSelectProps } from "@/types"
+import { useLocale } from "next-intl"
 
-export const multiSelectVariants = cva("m-1 cursor-pointer", {
-  variants: {
-    variant: {
-      default: "border-foreground/10 text-foreground bg-card hover:bg-card/80",
-      secondary:
-        "border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      destructive:
-        "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-      inverted: "inverted",
+export const multiSelectVariants = cva(
+  "m-1 cursor-pointer bg-[var(--color-red)]",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-foreground/10 text-foreground bg-card hover:bg-card/80",
+        secondary:
+          "border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive:
+          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+        inverted: "inverted",
+      },
     },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-})
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
 
 export const MultiSelect = React.forwardRef<
   HTMLButtonElement,
@@ -50,12 +49,12 @@ export const MultiSelect = React.forwardRef<
 >(
   (
     {
+      isMulti,
       options,
       onValueChange,
       variant,
       defaultValue = [],
       placeholder = "Select options",
-      animation = 0,
       maxCount = 3,
       modalPopover = false,
       asChild = false,
@@ -64,6 +63,7 @@ export const MultiSelect = React.forwardRef<
     },
     ref
   ) => {
+    const locale = useLocale()
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue)
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
@@ -104,6 +104,7 @@ export const MultiSelect = React.forwardRef<
       onValueChange(newSelectedValues)
     }
 
+    // console.log('selectedValues', selectedValues)
     return (
       <Popover
         open={isPopoverOpen}
@@ -123,24 +124,21 @@ export const MultiSelect = React.forwardRef<
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center">
-                  {selectedValues.slice(0, maxCount).map((value) => {
-                    const option = options.find((o) => o.value === value)
-                    const IconComponent = option?.icon
+                  {selectedValues.slice(0, maxCount).map((selectedValue) => {
+                    const option = options.find(
+                      (obj) => obj.nameEng === selectedValue
+                    )
                     return (
                       <Badge
-                        key={value}
+                        key={selectedValue}
                         className={cn(multiSelectVariants({ variant }))}
-                        style={{ animationDuration: `${animation}s` }}
                       >
-                        {IconComponent && (
-                          <IconComponent className="h-2 w-2 mr-2 bg-red" />
-                        )}
-                        {option?.label}
+                        {locale === "en" ? option?.nameEng : option?.nameUkr}
                         <XCircle
                           className="ml-2 h-4 w-4 cursor-pointer"
                           onClick={(event) => {
                             event.stopPropagation()
-                            toggleOption(value)
+                            toggleOption(selectedValue)
                           }}
                         />
                       </Badge>
@@ -194,40 +192,51 @@ export const MultiSelect = React.forwardRef<
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
-          <Command>
+          <Command className="flex flex-col max-h-[300px]">
             <CommandInput
               placeholder="Search..."
               onKeyDown={handleInputKeyDown}
             />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => {
-                  const isSelected = selectedValues.includes(option.value)
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => toggleOption(option.value)}
-                      className="cursor-pointer"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                          isSelected
-                            ? "bg-primary text-primary-foreground"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
+
+            {/* Scrollable list */}
+            <div className="flex-1">
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup>
+                  {options.map((optionObj) => {
+                    const isSelected = selectedValues.includes(
+                      optionObj.nameEng
+                    )
+                    return (
+                      <CommandItem
+                        key={optionObj.nameEng}
+                        onSelect={() => toggleOption(optionObj.nameEng)}
+                        className="cursor-pointer"
                       >
-                        <CheckIcon className="h-4 w-4" />
-                      </div>
-                      {option.icon && (
-                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                      )}
-                      <span>{option.label}</span>
-                    </CommandItem>
-                  )
-                })}
-              </CommandGroup>
+                        <div
+                          className={cn(
+                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                            isSelected
+                              ? "bg-primary text-primary-foreground"
+                              : "opacity-50 [&_svg]:invisible"
+                          )}
+                        >
+                          <CheckIcon className="h-4 w-4" />
+                        </div>
+                        <span>
+                          {locale === "en"
+                            ? optionObj.nameEng
+                            : optionObj.nameUkr}
+                        </span>
+                      </CommandItem>
+                    )
+                  })}
+                </CommandGroup>
+              </CommandList>
+            </div>
+
+            {/* Sticky footer buttons */}
+            <div className="border-t border-border bg-background sticky bottom-0 z-10">
               <CommandSeparator />
               <CommandGroup>
                 <div className="flex items-center justify-between">
@@ -253,7 +262,7 @@ export const MultiSelect = React.forwardRef<
                   </CommandItem>
                 </div>
               </CommandGroup>
-            </CommandList>
+            </div>
           </Command>
         </PopoverContent>
       </Popover>

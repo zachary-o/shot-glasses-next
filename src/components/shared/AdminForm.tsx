@@ -9,12 +9,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { geoList } from "@/geoData"
 import { shotGlassFormSchema } from "@/schemas/shotGlassSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { MultiSelect } from "./MultiSelect"
+import { Button } from "../ui/button"
 
 const AdminForm = () => {
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
@@ -33,28 +35,8 @@ const AdminForm = () => {
     }
   }
 
-  const frameworksList = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+  const watchedValues = form.watch()
+  console.log("Watched values:", watchedValues)
 
   return (
     <Form {...form}>
@@ -65,7 +47,7 @@ const AdminForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <PictureUploader />
+                <PictureUploader onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -111,57 +93,68 @@ const AdminForm = () => {
         <FormField
           control={form.control}
           name="latitude"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  id="latitude"
-                  placeholder="Latitude"
-                  type="number"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            const { onChange, ...rest } = field
+            return (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    id="latitude"
+                    placeholder="Latitude"
+                    type="number"
+                    {...rest}
+                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
         />
         <FormField
           control={form.control}
           name="longitude"
+          render={({ field }) => {
+            const { onChange, ...rest } = field
+            return (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    id="longitude"
+                    placeholder="Longitude"
+                    type="number"
+                    {...rest}
+                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+        <h5>Country</h5>
+        <FormField
+          control={form.control}
+          name="country"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  id="longitude"
-                  placeholder="Longitude"
-                  type="number"
-                  {...field}
+                <MultiSelect
+                  isMulti={true}
+                  options={geoList}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  placeholder="Select options"
+                  variant="inverted"
+                  maxCount={3}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <h5>Country</h5>
-          <FormField
-              control={form.control}
-              name="country"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <MultiSelect
-                      options={frameworksList}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      placeholder="Select options"
-                      variant="inverted"
-                      maxCount={3}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+        <Button>Submit</Button>
       </form>
     </Form>
   )

@@ -6,6 +6,10 @@ import { useDropzone } from "react-dropzone"
 import { Button } from "../ui/button"
 import { X } from "lucide-react"
 
+type PictureUploaderProps = {
+  onChange?: (file: File[]) => void
+}
+
 const baseStyle: CSSProperties = {
   flex: 1,
   display: "flex",
@@ -36,17 +40,25 @@ const rejectStyle: CSSProperties = {
   borderColor: "#ff1744",
 }
 
-const PictureUploader = () => {
+const PictureUploader: React.FC<PictureUploaderProps> = ({ onChange }) => {
   const t = useTranslations("Admin")
   const [previewImg, setPreviewImg] = useState<string | null>(null)
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 0) return
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length === 0) return
 
-    const file: File = acceptedFiles[0]
-    const previewUrl = URL.createObjectURL(file)
-    setPreviewImg(previewUrl)
-  }, [])
+      const file: File = acceptedFiles[0]
+      console.log("file", file)
+      const previewUrl = URL.createObjectURL(file)
+      setPreviewImg(previewUrl)
+
+      if (onChange) {
+        onChange(acceptedFiles)
+      }
+    },
+    [onChange]
+  )
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({ onDrop, accept: { "image/*": [] } })

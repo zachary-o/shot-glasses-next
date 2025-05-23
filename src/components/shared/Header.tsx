@@ -5,7 +5,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet"
 
 import { Locale } from "@/i18n/config"
@@ -23,7 +23,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
   const { data: session } = useSession()
   const [isPending, startTransition] = useTransition()
   const [currentLang, setCurrentLang] = useState<Locale>(initialLang)
-  console.log("session", session)
+
   function onClick(value: string) {
     startTransition(() => {
       setCurrentLang(value as Locale)
