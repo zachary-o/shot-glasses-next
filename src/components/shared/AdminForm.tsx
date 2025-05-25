@@ -1,42 +1,44 @@
-"use client"
+"use client";
 
-import PictureUploader from "@/components/shared/PictureUploader"
+import PictureUploader from "@/components/shared/PictureUploader";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { geoList } from "@/geoData"
-import { shotGlassFormSchema } from "@/schemas/shotGlassSchema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { MultiSelect } from "./MultiSelect"
-import { Button } from "../ui/button"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { continentsArr, geoList } from "@/geoData";
+import { shotGlassFormSchema } from "@/schemas/shotGlassSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup";
+import { CountriesSelect } from "./CountriesSelect";
+import { DatePicker } from "./DatePicker";
 
 const AdminForm = () => {
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
     resolver: zodResolver(shotGlassFormSchema),
     defaultValues: {},
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
     try {
       // Simulate a successful contact form submission
-      console.log(values)
-      toast.success("Your message has been sent successfully!")
+      console.log(values);
+      toast.success("Your message has been sent successfully!");
     } catch (error) {
-      console.error("Error submitting contact form", error)
-      toast.error("Failed to send your message. Please try again.")
+      console.error("Error submitting contact form", error);
+      toast.error("Failed to send your message. Please try again.");
     }
   }
 
-  const watchedValues = form.watch()
-  console.log("Watched values:", watchedValues)
+  const watchedValues = form.watch();
+  console.log("Watched values:", watchedValues);
 
   return (
     <Form {...form}>
@@ -45,7 +47,7 @@ const AdminForm = () => {
           control={form.control}
           name="image"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mb-4">
               <FormControl>
                 <PictureUploader onChange={field.onChange} />
               </FormControl>
@@ -53,7 +55,9 @@ const AdminForm = () => {
             </FormItem>
           )}
         />
-        <h5>Additional info</h5>
+        <h5 className="mb-2 font-bold text-[var(--color-black)]">
+          Additional info
+        </h5>
         <FormField
           control={form.control}
           name="cityEng"
@@ -94,7 +98,7 @@ const AdminForm = () => {
           control={form.control}
           name="latitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field
+            const { onChange, ...rest } = field;
             return (
               <FormItem>
                 <FormControl>
@@ -108,14 +112,14 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )
+            );
           }}
         />
         <FormField
           control={form.control}
           name="longitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field
+            const { onChange, ...rest } = field;
             return (
               <FormItem>
                 <FormControl>
@@ -129,21 +133,21 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )
+            );
           }}
         />
-        <h5>Country</h5>
+        <DatePicker />
+        <h4>Country</h4>
         <FormField
           control={form.control}
           name="country"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <MultiSelect
-                  isMulti={true}
+                <CountriesSelect
+                  isMulti={false}
                   options={geoList}
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
                   placeholder="Select options"
                   variant="inverted"
                   maxCount={3}
@@ -153,11 +157,27 @@ const AdminForm = () => {
             </FormItem>
           )}
         />
-
+        <h4>Continent</h4>
+        <FormField
+          control={form.control}
+          name="continent"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <ContinentsCheckboxGroup
+                  isMulti={false}
+                  onValueChange={field.onChange}
+                  options={continentsArr}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button>Submit</Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default AdminForm
+export default AdminForm;

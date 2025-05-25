@@ -1,9 +1,4 @@
-export interface GeoType {
-  nameEng: string
-  nameUkr: string
-  continentEng: string
-  continentUkr: string
-}
+import { Continent, GeoType } from "./types";
 
 export const geoList: GeoType[] = [
   {
@@ -1502,4 +1497,19 @@ export const geoList: GeoType[] = [
     continentEng: "Europe",
     continentUkr: "Європа",
   },
-]
+];
+
+export const continentsArr: Continent[] = geoList.reduce(
+  (acc: Continent[], curr: GeoType) => {
+    const exists = acc.some((item) => item.continentEng === curr.continentEng);
+    if (!exists) {
+      acc.push({
+        continentEng: curr.continentEng,
+        continentUkr: curr.continentUkr,
+      });
+    }
+
+    return acc;
+  },
+  []
+);

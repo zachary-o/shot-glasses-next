@@ -1,6 +1,6 @@
-import { z } from "zod"
+import { z } from "zod";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export const shotGlassFormSchema = z.object({
   image: z
@@ -25,8 +25,6 @@ export const shotGlassFormSchema = z.object({
     .min(-180, { message: "Longitude must be ≥ -180" })
     .max(180, { message: "Longitude must be ≤ 180" }),
   purchaseDate: z.date().optional(),
-  country: z
-    .array(z.string().min(1))
-    .min(1)
-    .nonempty("Please select at least one country."),
-})
+  country: z.string().nonempty("Please select a country."),
+  continent: z.string().nonempty("Please select a continent."),
+});
