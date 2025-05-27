@@ -1,20 +1,32 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns"
+import { enUS } from "date-fns/locale"
+import { CalendarIcon } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
+import { cn, localeMap } from "@/lib/utils"
+import { useLocale } from "next-intl"
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+export function DatePicker({
+  onValueChange,
+}: {
+  onValueChange: (value: Date) => void
+}) {
+  const localeStr = useLocale()
+  const dateFnsLocale = localeMap[localeStr] ?? enUS
+  const [date, setDate] = React.useState<Date>()
+
+  const handleDateChange = (date: Date) => {
+    onValueChange(date)
+  }
 
   return (
     <Popover>
@@ -34,10 +46,16 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(selectedDate) => {
+            if (selectedDate) {
+              setDate(selectedDate)
+              handleDateChange(selectedDate)
+            }
+          }}
           initialFocus
+          locale={dateFnsLocale}
         />
       </PopoverContent>
     </Popover>
-  );
+  )
 }

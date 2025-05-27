@@ -1,44 +1,76 @@
-"use client";
+"use client"
 
-import PictureUploader from "@/components/shared/PictureUploader";
+import PictureUploader from "@/components/shared/PictureUploader"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { continentsArr, geoList } from "@/geoData";
-import { shotGlassFormSchema } from "@/schemas/shotGlassSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import { Button } from "../ui/button";
-import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup";
-import { CountriesSelect } from "./CountriesSelect";
-import { DatePicker } from "./DatePicker";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { continentsArr, geoList } from "@/geoData"
+import { shotGlassFormSchema } from "@/schemas/shotGlassSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
+import { Button } from "../ui/button"
+import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
+import { CountriesSelect } from "./CountriesSelect"
+import { DatePicker } from "./DatePicker"
 
 const AdminForm = () => {
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
     resolver: zodResolver(shotGlassFormSchema),
     defaultValues: {},
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
     try {
-      // Simulate a successful contact form submission
-      console.log(values);
-      toast.success("Your message has been sent successfully!");
+      const imageFile = values.image[0]
+
+      const formData = new FormData()
+      formData.append("file", imageFile)
+      formData.append("upload_preset", "shotglass_upload")
+
+      const cloudinaryRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      )
+
+      const data = await cloudinaryRes.json()
+      const imageUrl = data.secure_utl
+      if (!imageUrl) throw new Error("Cloudinary upload failed.")
+
+      const payload = {
+        ...values,
+        image: imageUrl,
+      }
+
+      const res = await fetch("/api/shotGlasses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) throw new Error("Saving to DB failed.")
+
+      toast.success("Your message has been sent successfully!")
+      form.reset()
     } catch (error) {
-      console.error("Error submitting contact form", error);
-      toast.error("Failed to send your message. Please try again.");
+      console.error("Error submitting contact form", error)
+      toast.error("Submission failed. Please try again.")
     }
   }
 
-  const watchedValues = form.watch();
-  console.log("Watched values:", watchedValues);
+  const watchedValues = form.watch()
+  console.log("Watched values:", watchedValues)
 
   return (
     <Form {...form}>
@@ -98,7 +130,7 @@ const AdminForm = () => {
           control={form.control}
           name="latitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field;
+            const { onChange, ...rest } = field
             return (
               <FormItem>
                 <FormControl>
@@ -112,14 +144,14 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            );
+            )
           }}
         />
         <FormField
           control={form.control}
           name="longitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field;
+            const { onChange, ...rest } = field
             return (
               <FormItem>
                 <FormControl>
@@ -133,10 +165,21 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            );
+            )
           }}
         />
-        <DatePicker />
+        <FormField
+          control={form.control}
+          name="purchaseDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <DatePicker onValueChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <h4>Country</h4>
         <FormField
           control={form.control}
@@ -177,7 +220,7 @@ const AdminForm = () => {
         <Button>Submit</Button>
       </form>
     </Form>
-  );
-};
+  )
+}
 
-export default AdminForm;
+export default AdminForm

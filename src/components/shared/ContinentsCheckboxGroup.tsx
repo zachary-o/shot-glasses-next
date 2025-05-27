@@ -1,39 +1,36 @@
-import { continentsArr } from "@/geoData";
-import { Continent } from "@/types";
-import { Checkbox } from "../ui/checkbox";
-import { useState } from "react";
-import { useLocale } from "next-intl";
+import { Continent } from "@/types"
+import { useLocale } from "next-intl"
+import { useState } from "react"
+import { Checkbox } from "../ui/checkbox"
 
 type ContinentsCheckboxGroupProps = {
-  isMulti: boolean;
-  onValueChange: (value: string | string[]) => void;
-  options: Continent[];
-};
+  isMulti: boolean
+  onValueChange: (value: string | string[]) => void
+  options: Continent[]
+}
 
 const ContinentsCheckboxGroup = ({
   isMulti,
   onValueChange,
   options,
 }: ContinentsCheckboxGroupProps) => {
-  const locale = useLocale();
+  const locale = useLocale()
 
-  const [selectedContinent, setSelectedContinent] = useState<string[]>([]);
-  console.log("continentsArr", continentsArr);
-  console.log("selectedContinent", selectedContinent);
+  const [selectedContinent, setSelectedContinent] = useState<string[]>([])
 
   const toggleOptions = (option: string, checked: string | boolean) => {
     const newSelectedValues = checked
       ? [...selectedContinent, option]
-      : selectedContinent.filter((value) => value !== option);
-    setSelectedContinent(newSelectedValues);
-    onValueChange(newSelectedValues);
-  };
+      : selectedContinent.filter((value) => value !== option)
+    setSelectedContinent(newSelectedValues)
+    onValueChange(newSelectedValues)
+  }
 
   const toggleOption = (option: string, checked: string | boolean) => {
-    const newValue = checked ? option : "";
-    setSelectedContinent(checked ? [option] : []);
-    onValueChange(newValue);
-  };
+    const newValue = checked ? option : ""
+    setSelectedContinent(checked ? [option] : [])
+    onValueChange(newValue)
+  }
 
   return (
     <>
@@ -54,6 +51,6 @@ const ContinentsCheckboxGroup = ({
         </div>
       ))}
     </>
-  );
-};
-export default ContinentsCheckboxGroup;
+  )
+}
+export default ContinentsCheckboxGroup
