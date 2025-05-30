@@ -1,8 +1,16 @@
-// lib/prisma.ts
-import { PrismaClient } from "@prisma/client"
+// import { prisma } from "@/prisma";
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+// async function clearDatabase() {
+//   try {
+//     // Delete records in the correct order to avoid foreign key constraints
+//     await prisma.shotGlass.deleteMany();
 
-export const prisma = globalForPrisma.prisma || new PrismaClient()
+//     console.log("✅ All data deleted from ShotGlass table.");
+//   } catch (error) {
+//     console.error("❌ Error deleting data:", error);
+//   } finally {
+//     await prisma.$disconnect();
+//   }
+// }
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+// clearDatabase();

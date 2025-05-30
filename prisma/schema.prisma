@@ -21,8 +21,8 @@ model ShotGlass {
   countryUkr   String
   continentEng String
   continentUkr String
-  latitude     Int
-  longitude    Int
+  latitude     String
+  longitude    String
   imageUrl     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
