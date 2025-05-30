@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { MultiSelectProps } from "@/types"
+import { Country, MultiSelectProps } from "@/types"
 import { useLocale } from "next-intl"
 import { forwardRef, useState } from "react"
 
@@ -59,7 +59,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     ref
   ) => {
     const locale = useLocale()
-    const [selectedValues, setSelectedValues] = useState<string[]>([])
+    const [selectedValues, setSelectedValues] = useState<Country[]>([])
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
     const handleInputKeyDown = (
@@ -75,17 +75,17 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       }
     }
 
-    const toggleOptions = (option: string) => {
-      const newSelectedValues = selectedValues.includes(option)
-        ? selectedValues.filter((value) => value !== option)
-        : [...selectedValues, option]
-      setSelectedValues(newSelectedValues)
-      onValueChange(newSelectedValues)
-    }
-
-    const toggleOption = (option: string) => {
-      setSelectedValues([option])
-      onValueChange(option)
+    const handleToggle = (option: Country) => {
+      if (isMulti) {
+        const newSelectedValues = selectedValues.includes(option)
+          ? selectedValues.filter((value) => value !== option)
+          : [...selectedValues, option]
+        setSelectedValues(newSelectedValues)
+        onValueChange(newSelectedValues)
+      } else {
+        setSelectedValues([option])
+        onValueChange(option)
+      }
     }
 
     const handleClear = () => {
@@ -126,11 +126,11 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                     .slice(0, maxCount)
                     .map((selectedValue, index) => {
                       const option = options.find(
-                        (obj) => obj.nameEng === selectedValue
+                        (obj) => obj.nameEng === selectedValue.nameEng
                       )
                       return (
                         <Badge
-                          key={isMulti ? selectedValue : index}
+                          key={isMulti ? selectedValue.nameEng : index}
                           className={cn(multiSelectVariants({ variant }))}
                         >
                           {locale === "en" ? option?.nameEng : option?.nameUkr}
@@ -138,7 +138,10 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                             className="ml-2 h-4 w-4 cursor-pointer"
                             onClick={(event) => {
                               event.stopPropagation()
-                              toggleOption(selectedValue)
+                              handleToggle({
+                                nameEng: selectedValue.nameEng,
+                                nameUkr: selectedValue.nameUkr,
+                              })
                             }}
                           />
                         </Badge>
@@ -204,17 +207,18 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
                   {options.map((optionObj) => {
-                    const isSelected = selectedValues.includes(
-                      optionObj.nameEng
-                    )
+                    const isSelected = selectedValues
+                      .map((item) => item.nameEng)
+                      .includes(optionObj.nameEng)
                     return (
                       <CommandItem
                         key={optionObj.nameEng}
-                        onSelect={
-                          isMulti
-                            ? () => toggleOptions(optionObj.nameEng)
-                            : () => toggleOption(optionObj.nameEng)
-                        }
+                        onSelect={() => {
+                          handleToggle({
+                            nameEng: optionObj.nameEng,
+                            nameUkr: optionObj.nameUkr,
+                          })
+                        }}
                         className="cursor-pointer"
                       >
                         <div

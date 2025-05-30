@@ -5,7 +5,7 @@ import { Checkbox } from "../ui/checkbox"
 
 type ContinentsCheckboxGroupProps = {
   isMulti: boolean
-  onValueChange: (value: string | string[]) => void
+  onValueChange: (value: Continent | Continent[] | null) => void
   options: Continent[]
 }
 
@@ -16,20 +16,20 @@ const ContinentsCheckboxGroup = ({
 }: ContinentsCheckboxGroupProps) => {
   const locale = useLocale()
 
-  const [selectedContinent, setSelectedContinent] = useState<string[]>([])
+  const [selectedContinent, setSelectedContinent] = useState<Continent[]>([])
 
-  const toggleOptions = (option: string, checked: string | boolean) => {
-    const newSelectedValues = checked
-      ? [...selectedContinent, option]
-      : selectedContinent.filter((value) => value !== option)
-    setSelectedContinent(newSelectedValues)
-    onValueChange(newSelectedValues)
-  }
-
-  const toggleOption = (option: string, checked: string | boolean) => {
-    const newValue = checked ? option : ""
-    setSelectedContinent(checked ? [option] : [])
-    onValueChange(newValue)
+  const handleToggle = (option: Continent, checked: string | boolean) => {
+    if (isMulti) {
+      const newSelected = checked
+        ? [...selectedContinent, option]
+        : selectedContinent.filter((v) => v !== option)
+      setSelectedContinent(newSelected)
+      onValueChange(newSelected)
+    } else {
+      const newSelected = checked ? [option] : []
+      setSelectedContinent(newSelected)
+      onValueChange(checked ? option : null)
+    }
   }
 
   return (
@@ -38,12 +38,8 @@ const ContinentsCheckboxGroup = ({
         <div className="flex items-center space-x-2" key={item.continentEng}>
           <Checkbox
             id={item.continentEng}
-            checked={selectedContinent.includes(item.continentEng)}
-            onCheckedChange={(checked) =>
-              isMulti
-                ? toggleOptions(item.continentEng, checked)
-                : toggleOption(item.continentEng, checked)
-            }
+            checked={selectedContinent.includes(item)}
+            onCheckedChange={(checked) => handleToggle(item, checked)}
           />
           <label htmlFor={item.continentEng}>
             {locale === "en" ? item.continentEng : item.continentUkr}

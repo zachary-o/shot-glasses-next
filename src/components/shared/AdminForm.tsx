@@ -23,7 +23,22 @@ import { DatePicker } from "./DatePicker"
 const AdminForm = () => {
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
     resolver: zodResolver(shotGlassFormSchema),
-    defaultValues: {},
+    defaultValues: {
+      image: [],
+      cityEng: "",
+      cityUkr: "",
+      latitude: "",
+      longitude: "",
+      purchaseDate: undefined,
+      country: {
+        nameEng: "",
+        nameUkr: "",
+      },
+      continent: {
+        continentEng: "",
+        continentUkr: "",
+      },
+    },
   })
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
@@ -43,12 +58,19 @@ const AdminForm = () => {
       )
 
       const data = await cloudinaryRes.json()
-      const imageUrl = data.secure_utl
+      const imageUrl = data.secure_url
       if (!imageUrl) throw new Error("Cloudinary upload failed.")
 
       const payload = {
-        ...values,
-        image: imageUrl,
+        cityEng: values.cityEng,
+        cityUkr: values.cityUkr,
+        countryEng: values.country.nameEng,
+        countryUkr: values.country.nameUkr,
+        continentEng: values.continent.continentEng,
+        continentUkr: values.continent.continentUkr,
+        latitude: values.latitude,
+        longitude: values.longitude,
+        imageUrl,
       }
 
       const res = await fetch("/api/shotGlasses", {
@@ -62,10 +84,26 @@ const AdminForm = () => {
       if (!res.ok) throw new Error("Saving to DB failed.")
 
       toast.success("Your message has been sent successfully!")
-      form.reset()
     } catch (error) {
       console.error("Error submitting contact form", error)
       toast.error("Submission failed. Please try again.")
+    } finally {
+      form.reset({
+        image: [],
+        cityEng: "",
+        cityUkr: "",
+        latitude: "",
+        longitude: "",
+        purchaseDate: undefined,
+        country: {
+          nameEng: "",
+          nameUkr: "",
+        },
+        continent: {
+          continentEng: "",
+          continentUkr: "",
+        },
+      })
     }
   }
 
@@ -137,9 +175,10 @@ const AdminForm = () => {
                   <Input
                     id="latitude"
                     placeholder="Latitude"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     {...rest}
-                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                    onChange={(e) => onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -158,9 +197,10 @@ const AdminForm = () => {
                   <Input
                     id="longitude"
                     placeholder="Longitude"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     {...rest}
-                    onChange={(e) => onChange(e.target.valueAsNumber)}
+                    onChange={(e) => onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
