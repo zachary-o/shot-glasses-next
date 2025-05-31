@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import { format } from "date-fns"
-import { enUS } from "date-fns/locale"
-import { CalendarIcon } from "lucide-react"
-import * as React from "react"
+import { format } from "date-fns";
+import { enUS } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn, localeMap } from "@/lib/utils"
-import { useLocale } from "next-intl"
+} from "@/components/ui/popover";
+import { cn, localeMap } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export function DatePicker({
+  value,
   onValueChange,
 }: {
-  onValueChange: (value: Date) => void
+  value: Date | undefined;
+  onValueChange: (value: Date) => void;
 }) {
-  const localeStr = useLocale()
-  const dateFnsLocale = localeMap[localeStr] ?? enUS
-  const [date, setDate] = React.useState<Date>()
-
-  const handleDateChange = (date: Date) => {
-    onValueChange(date)
-  }
+  const localeStr = useLocale();
+  const dateFnsLocale = localeMap[localeStr] ?? enUS;
+  const handleDateChange = (value: Date) => {
+    onValueChange(value);
+  };
 
   return (
     <Popover>
@@ -35,21 +35,20 @@ export function DatePicker({
           variant={"outline"}
           className={cn(
             "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {value ? format(value, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
+          selected={value}
           onSelect={(selectedDate) => {
             if (selectedDate) {
-              setDate(selectedDate)
-              handleDateChange(selectedDate)
+              handleDateChange(selectedDate);
             }
           }}
           initialFocus
@@ -57,5 +56,5 @@ export function DatePicker({
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }

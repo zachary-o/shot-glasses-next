@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import PictureUploader from "@/components/shared/PictureUploader"
+import PictureUploader from "@/components/shared/PictureUploader";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { continentsArr, geoList } from "@/geoData"
-import { shotGlassFormSchema } from "@/schemas/shotGlassSchema"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { Button } from "../ui/button"
-import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
-import { CountriesSelect } from "./CountriesSelect"
-import { DatePicker } from "./DatePicker"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { continentsArr, geoList } from "@/geoData";
+import { shotGlassFormSchema } from "@/schemas/shotGlassSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Button } from "../ui/button";
+import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup";
+import { CountriesSelect } from "./CountriesSelect";
+import { DatePicker } from "./DatePicker";
 
 const AdminForm = () => {
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
@@ -39,15 +39,15 @@ const AdminForm = () => {
         continentUkr: "",
       },
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
     try {
-      const imageFile = values.image[0]
+      const imageFile = values.image[0];
 
-      const formData = new FormData()
-      formData.append("file", imageFile)
-      formData.append("upload_preset", "shotglass_upload")
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("upload_preset", "shotglass_upload");
 
       const cloudinaryRes = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -55,11 +55,11 @@ const AdminForm = () => {
           method: "POST",
           body: formData,
         }
-      )
+      );
 
-      const data = await cloudinaryRes.json()
-      const imageUrl = data.secure_url
-      if (!imageUrl) throw new Error("Cloudinary upload failed.")
+      const data = await cloudinaryRes.json();
+      const imageUrl = data.secure_url;
+      if (!imageUrl) throw new Error("Cloudinary upload failed.");
 
       const payload = {
         cityEng: values.cityEng,
@@ -71,7 +71,7 @@ const AdminForm = () => {
         latitude: values.latitude,
         longitude: values.longitude,
         imageUrl,
-      }
+      };
 
       const res = await fetch("/api/shotGlasses", {
         method: "POST",
@@ -79,36 +79,21 @@ const AdminForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      })
+      });
 
-      if (!res.ok) throw new Error("Saving to DB failed.")
+      if (!res.ok) throw new Error("Saving to DB failed.");
 
-      toast.success("Your message has been sent successfully!")
+      toast.success("Shot glass has been added successfully!");
     } catch (error) {
-      console.error("Error submitting contact form", error)
-      toast.error("Submission failed. Please try again.")
+      console.error("Error adding a shot glass", error);
+      toast.error("Uploading failed. Please try again.");
     } finally {
-      form.reset({
-        image: [],
-        cityEng: "",
-        cityUkr: "",
-        latitude: "",
-        longitude: "",
-        purchaseDate: undefined,
-        country: {
-          nameEng: "",
-          nameUkr: "",
-        },
-        continent: {
-          continentEng: "",
-          continentUkr: "",
-        },
-      })
+      form.reset();
     }
   }
 
-  const watchedValues = form.watch()
-  console.log("Watched values:", watchedValues)
+  const watchedValues = form.watch();
+  console.log("Watched values:", watchedValues);
 
   return (
     <Form {...form}>
@@ -119,7 +104,10 @@ const AdminForm = () => {
           render={({ field }) => (
             <FormItem className="mb-4">
               <FormControl>
-                <PictureUploader onChange={field.onChange} />
+                <PictureUploader
+                  value={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -168,7 +156,7 @@ const AdminForm = () => {
           control={form.control}
           name="latitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field
+            const { onChange, ...rest } = field;
             return (
               <FormItem>
                 <FormControl>
@@ -183,14 +171,14 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )
+            );
           }}
         />
         <FormField
           control={form.control}
           name="longitude"
           render={({ field }) => {
-            const { onChange, ...rest } = field
+            const { onChange, ...rest } = field;
             return (
               <FormItem>
                 <FormControl>
@@ -205,7 +193,7 @@ const AdminForm = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )
+            );
           }}
         />
         <FormField
@@ -214,7 +202,10 @@ const AdminForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <DatePicker onValueChange={field.onChange} />
+                <DatePicker
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -230,6 +221,7 @@ const AdminForm = () => {
                 <CountriesSelect
                   isMulti={false}
                   options={geoList}
+                  value={field.value}
                   onValueChange={field.onChange}
                   placeholder="Select options"
                   variant="inverted"
@@ -249,6 +241,7 @@ const AdminForm = () => {
               <FormControl>
                 <ContinentsCheckboxGroup
                   isMulti={false}
+                  value={field.value}
                   onValueChange={field.onChange}
                   options={continentsArr}
                 />
@@ -260,7 +253,7 @@ const AdminForm = () => {
         <Button>Submit</Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default AdminForm
+export default AdminForm;

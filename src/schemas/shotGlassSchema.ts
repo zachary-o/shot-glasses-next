@@ -10,7 +10,6 @@ const continentSchema = z.object({
 const countrySchema = z.object({
   nameEng: z.string(),
   nameUkr: z.string(),
-  // continent: continentSchema,
 })
 
 export const shotGlassFormSchema = z.object({

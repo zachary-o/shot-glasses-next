@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { useTranslations } from "next-intl"
-import { CSSProperties, useCallback, useMemo, useState } from "react"
-import { useDropzone } from "react-dropzone"
-import { Button } from "../ui/button"
-import { X } from "lucide-react"
+import { useTranslations } from "next-intl";
+import { CSSProperties, useCallback, useMemo } from "react";
+import { useDropzone } from "react-dropzone";
+import { Button } from "../ui/button";
+import { X } from "lucide-react";
 
 type PictureUploaderProps = {
-  onChange?: (file: File[]) => void
-}
+  value: File[];
+  onChange?: (file: File[]) => void;
+};
 
 const baseStyle: CSSProperties = {
   flex: 1,
@@ -25,43 +26,40 @@ const baseStyle: CSSProperties = {
   color: "var(--color-black)",
   outline: "none",
   transition: "border .24s ease-in-out",
-}
+};
 
 const focusedStyle: CSSProperties = {
   borderColor: "#[var(--color-red)]",
-}
+};
 
 const acceptStyle: CSSProperties = {
   borderColor: "#504DCC",
   backgroundColor: "#E6E6FF",
-}
+};
 
 const rejectStyle: CSSProperties = {
   borderColor: "#ff1744",
-}
+};
 
-const PictureUploader: React.FC<PictureUploaderProps> = ({ onChange }) => {
-  const t = useTranslations("Admin")
-  const [previewImg, setPreviewImg] = useState<string | null>(null)
+const PictureUploader: React.FC<PictureUploaderProps> = ({
+  value,
+  onChange,
+}) => {
+  const t = useTranslations("Admin");
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles.length === 0) return
-
-      const file: File = acceptedFiles[0]
-      console.log("file", file)
-      const previewUrl = URL.createObjectURL(file)
-      setPreviewImg(previewUrl)
+      if (acceptedFiles.length === 0) return;
 
       if (onChange) {
-        onChange(acceptedFiles)
+        onChange(acceptedFiles);
       }
     },
     [onChange]
-  )
+  );
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
-    useDropzone({ onDrop, accept: { "image/*": [] } })
+    useDropzone({ onDrop, accept: { "image/*": [] } });
 
   const style = useMemo(
     () => ({
@@ -71,7 +69,7 @@ const PictureUploader: React.FC<PictureUploaderProps> = ({ onChange }) => {
       ...(isDragReject ? rejectStyle : {}),
     }),
     [isFocused, isDragAccept, isDragReject]
-  )
+  );
 
   return (
     <div>
@@ -100,36 +98,46 @@ const PictureUploader: React.FC<PictureUploaderProps> = ({ onChange }) => {
         </div>
 
         {/* IMAGE PREVIEW */}
-        {previewImg && (
-          <div className="relative">
-            <img width={200} src={previewImg} alt="preview image" />
-            <Button
-              className="absolute w-[20px] h-[20px] bg-white -top-2 -right-2 cursor-pointer border border-[#1C1B1F] rounded-full"
-              size="icon"
-              variant="ghost"
-              onClick={(event) => {
-                event.stopPropagation()
-                setPreviewImg(null)
-              }}
-            >
-              <X width={16} height={16} />
-            </Button>
+        {value && value.length > 0 && (
+          <div className="flex gap-4 flex-wrap">
+            {value.map((file, index) => (
+              <div key={index} className="relative">
+                <img
+                  width={200}
+                  src={URL.createObjectURL(file)}
+                  alt={`preview ${index}`}
+                />
+                <Button
+                  className="absolute w-[20px] h-[20px] bg-white -top-2 -right-2 cursor-pointer border border-[#1C1B1F] rounded-full"
+                  size="icon"
+                  variant="ghost"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    const newFiles = [...value];
+                    newFiles.splice(index, 1);
+                    onChange?.(newFiles);
+                  }}
+                >
+                  <X width={16} height={16} />
+                </Button>
+              </div>
+            ))}
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PictureUploader
+export default PictureUploader;
 
 // DRAG'N'DROP SVG
 
 type IconProps = {
-  color?: string
-  width?: number
-  height?: number
-}
+  color?: string;
+  width?: number;
+  height?: number;
+};
 
 const CustomIcon: React.FC<IconProps> = ({
   color = "#1C1B1F",
@@ -162,4 +170,4 @@ const CustomIcon: React.FC<IconProps> = ({
       />
     </g>
   </svg>
-)
+);

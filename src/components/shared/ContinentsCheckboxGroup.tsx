@@ -1,36 +1,31 @@
-import { Continent } from "@/types"
-import { useLocale } from "next-intl"
-import { useState } from "react"
-import { Checkbox } from "../ui/checkbox"
-
-type ContinentsCheckboxGroupProps = {
-  isMulti: boolean
-  onValueChange: (value: Continent | Continent[] | null) => void
-  options: Continent[]
-}
+import { Continent, ContinentsCheckboxGroupProps } from "@/types";
+import { useLocale } from "next-intl";
+import { Checkbox } from "../ui/checkbox";
 
 const ContinentsCheckboxGroup = ({
+  value,
   isMulti,
   onValueChange,
   options,
 }: ContinentsCheckboxGroupProps) => {
-  const locale = useLocale()
-
-  const [selectedContinent, setSelectedContinent] = useState<Continent[]>([])
+  const locale = useLocale();
+  const selectedValues: Continent[] = Array.isArray(value)
+    ? value.filter((v) => v.continentEng)
+    : value && value.continentEng
+    ? [value]
+    : [];
 
   const handleToggle = (option: Continent, checked: string | boolean) => {
     if (isMulti) {
       const newSelected = checked
-        ? [...selectedContinent, option]
-        : selectedContinent.filter((v) => v !== option)
-      setSelectedContinent(newSelected)
-      onValueChange(newSelected)
+        ? [...selectedValues, option]
+        : selectedValues.filter((v) => v !== option);
+      onValueChange(newSelected);
     } else {
-      const newSelected = checked ? [option] : []
-      setSelectedContinent(newSelected)
-      onValueChange(checked ? option : null)
+      const newSelected = checked ? option : [];
+      onValueChange(newSelected);
     }
-  }
+  };
 
   return (
     <>
@@ -38,7 +33,10 @@ const ContinentsCheckboxGroup = ({
         <div className="flex items-center space-x-2" key={item.continentEng}>
           <Checkbox
             id={item.continentEng}
-            checked={selectedContinent.includes(item)}
+            checked={
+              selectedValues.length > 0 &&
+              selectedValues[0].continentEng === item.continentEng
+            }
             onCheckedChange={(checked) => handleToggle(item, checked)}
           />
           <label htmlFor={item.continentEng}>
@@ -47,6 +45,6 @@ const ContinentsCheckboxGroup = ({
         </div>
       ))}
     </>
-  )
-}
-export default ContinentsCheckboxGroup
+  );
+};
+export default ContinentsCheckboxGroup;
