@@ -11,7 +11,7 @@ const Providers = ({
 }: {
   children: ReactNode
   locale: string
-  messages: Record<string, any>
+  messages: Record<string, string>
 }) => {
   return (
     <SessionProvider>

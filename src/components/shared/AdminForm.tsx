@@ -19,8 +19,10 @@ import { Button } from "../ui/button";
 import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup";
 import { CountriesSelect } from "./CountriesSelect";
 import { DatePicker } from "./DatePicker";
+import { useState } from "react";
 
 const AdminForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
     resolver: zodResolver(shotGlassFormSchema),
     defaultValues: {
@@ -42,9 +44,9 @@ const AdminForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
+    setIsSubmitting(true);
     try {
       const imageFile = values.image[0];
-
       const formData = new FormData();
       formData.append("file", imageFile);
       formData.append("upload_preset", "shotglass_upload");
@@ -88,6 +90,7 @@ const AdminForm = () => {
       console.error("Error adding a shot glass", error);
       toast.error("Uploading failed. Please try again.");
     } finally {
+      setIsSubmitting(false);
       form.reset();
     }
   }
@@ -250,7 +253,9 @@ const AdminForm = () => {
             </FormItem>
           )}
         />
-        <Button>Submit</Button>
+        <Button disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );

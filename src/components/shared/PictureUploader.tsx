@@ -1,10 +1,11 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { CSSProperties, useCallback, useMemo } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
 
 type PictureUploaderProps = {
   value: File[];
@@ -102,7 +103,7 @@ const PictureUploader: React.FC<PictureUploaderProps> = ({
           <div className="flex gap-4 flex-wrap">
             {value.map((file, index) => (
               <div key={index} className="relative">
-                <img
+                <Image
                   width={200}
                   src={URL.createObjectURL(file)}
                   alt={`preview ${index}`}
