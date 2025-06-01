@@ -1,12 +1,12 @@
 import Header from "@/components/shared/Header"
 import Providers from "@/components/shared/Providers"
+import { Toaster } from "@/components/ui/sonner"
 import clsx from "clsx"
 import type { Metadata } from "next"
 import { getLocale, getMessages } from "next-intl/server"
 import localFont from "next/font/local"
 import "./globals.css"
 import { getUserLocale } from "./services/locale"
-import { Toaster } from "@/components/ui/sonner"
 
 const pacifico = localFont({
   src: "./fonts/Pacifico-Regular.ttf",

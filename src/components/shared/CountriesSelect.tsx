@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { CheckIcon, ChevronDown, XCircle, XIcon } from "lucide-react";
+import { ChevronDown, XCircle, XIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,25 +22,10 @@ import { cn } from "@/lib/utils";
 import { Country, MultiSelectProps } from "@/types";
 import { useLocale } from "next-intl";
 import { forwardRef, useState } from "react";
+import { Checkbox } from "../ui/checkbox";
 
 export const multiSelectVariants = cva(
-  "m-1 cursor-pointer bg-[var(--color-red)]",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-foreground/10 text-foreground bg-card hover:bg-card/80",
-        secondary:
-          "border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        inverted: "inverted",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
+  "m-1 cursor-pointer bg-[var(--color-red)]"
 );
 
 export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
@@ -50,7 +35,6 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       options,
       value,
       onValueChange,
-      variant,
       placeholder = "Select options",
       maxCount = 3,
       modalPopover = false,
@@ -121,7 +105,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
+              "flex w-full p-0 rounded-md border h-9 items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
               className
             )}
           >
@@ -136,8 +120,8 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                       );
                       return (
                         <Badge
+                          className="bg-[var(--color-red)]"
                           key={isMulti ? selectedValue.nameEng : index}
-                          className={cn(multiSelectVariants({ variant }))}
                         >
                           {locale === "en" ? option?.nameEng : option?.nameUkr}
                           <XCircle
@@ -156,8 +140,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={cn(
-                        "bg-transparent text-foreground border-foreground/1 hover:bg-transparent",
-                        multiSelectVariants({ variant })
+                        "bg-transparent text-foreground border-foreground/1 hover:bg-transparent"
                       )}
                     >
                       {`+ ${selectedValues.length - maxCount} more`}
@@ -225,18 +208,9 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                             nameUkr: optionObj.nameUkr,
                           });
                         }}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:!bg-[#FEE4E1]"
                       >
-                        <div
-                          className={cn(
-                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                            isSelected
-                              ? "bg-primary text-primary-foreground"
-                              : "opacity-50 [&_svg]:invisible"
-                          )}
-                        >
-                          <CheckIcon className="h-4 w-4" />
-                        </div>
+                        <Checkbox checked={isSelected} />
                         <span>
                           {locale === "en"
                             ? optionObj.nameEng

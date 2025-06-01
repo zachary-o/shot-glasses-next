@@ -17,7 +17,6 @@ const baseStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  maxWidth: "522px",
   padding: "20px",
   borderWidth: 1,
   borderRadius: 20,
@@ -73,7 +72,7 @@ const PictureUploader: React.FC<PictureUploaderProps> = ({
   );
 
   return (
-    <div>
+    <div className="w-full lg:max-w-[522px]">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <CustomIcon
@@ -105,6 +104,7 @@ const PictureUploader: React.FC<PictureUploaderProps> = ({
               <div key={index} className="relative">
                 <Image
                   width={200}
+                  height={200}
                   src={URL.createObjectURL(file)}
                   alt={`preview ${index}`}
                 />
