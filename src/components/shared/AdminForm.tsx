@@ -46,6 +46,8 @@ const AdminForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
+    "use server"
+    
     setIsSubmitting(true);
     start();
     try {
