@@ -81,7 +81,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     };
 
     const handleClear = () => {
-      onValueChange([]);
+      onValueChange({ nameEng: "", nameUkr: "" });
     };
 
     const handleTogglePopover = () => {
@@ -105,7 +105,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full p-0 rounded-md border h-9 items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
+              "flex w-full p-2 rounded-md border h-9 items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
               className
             )}
           >

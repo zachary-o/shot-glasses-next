@@ -2,9 +2,9 @@
 
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
-import { LoadingBarContainer } from "react-top-loading-bar";
-
 import { ReactNode } from "react";
+import { LoadingBarContainer } from "react-top-loading-bar";
+import TopLoadingBarTrigger from "./TopLoadingBarTrigger";
 
 const Providers = ({
   children,
@@ -28,6 +28,7 @@ const Providers = ({
             height: 2,
           }}
         >
+          <TopLoadingBarTrigger />
           {children}
         </LoadingBarContainer>
       </NextIntlClientProvider>

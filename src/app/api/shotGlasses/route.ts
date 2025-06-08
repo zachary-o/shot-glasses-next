@@ -1,14 +1,14 @@
-import { prisma } from "@/prisma"
-import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
-  const shotGlasses = await prisma.shotGlass.findMany()
-  return NextResponse.json(shotGlasses)
+  const shotGlasses = await prisma.shotGlass.findMany();
+  return NextResponse.json(shotGlasses);
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.json()
+    const data = await req.json();
 
     const shotGlass = await prisma.shotGlass.create({
       data: {
@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
         longitude: data.longitude,
         imageUrl: data.imageUrl,
       },
-    })
+    });
 
-    return NextResponse.json(shotGlass)
+    return NextResponse.json(shotGlass);
   } catch (error) {
-    console.error("Error creating ShotGlass:", error)
-    return new NextResponse("Internal Server Error", { status: 500 })
+    console.error("Error creating ShotGlass:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

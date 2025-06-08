@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Sheet,
@@ -6,29 +6,29 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 
-import { Locale } from "@/i18n/config"
-import { GlassWater } from "lucide-react"
-import { signIn, signOut, useSession } from "next-auth/react"
-import { useTranslations } from "next-intl"
-import Link from "next/link"
-import { useState, useTransition } from "react"
-import { setUserLocale } from "../../app/services/locale"
-import { Button } from "../ui/button"
-import LanguageToggle from "./LanguageToggle"
+import { Locale } from "@/i18n/config";
+import { GlassWater } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useState, useTransition } from "react";
+import { setUserLocale } from "../../app/services/locale";
+import { Button } from "../ui/button";
+import LanguageToggle from "./LanguageToggle";
 
 const Header = ({ initialLang }: { initialLang: Locale }) => {
-  const t = useTranslations("Header")
-  const { data: session } = useSession()
-  const [isPending, startTransition] = useTransition()
-  const [currentLang, setCurrentLang] = useState<Locale>(initialLang)
+  const t = useTranslations("Header");
+  const { data: session } = useSession();
+  const [isPending, startTransition] = useTransition();
+  const [currentLang, setCurrentLang] = useState<Locale>(initialLang);
 
   function onClick(value: string) {
     startTransition(() => {
-      setCurrentLang(value as Locale)
-      setUserLocale(value as Locale)
-    })
+      setCurrentLang(value as Locale);
+      setUserLocale(value as Locale);
+    });
   }
 
   return (
@@ -37,7 +37,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
       <div className="flex items-center">
         <Link
           href="/"
-          className="font-[family-name:var(--font-pacifico)] text-[41px] text-[var(--color-red)] min-w-[244px] select-none"
+          className="font-[family-name:var(--font-pacifico)] text-[41px] text-[var(--color-red)] min-w-[244px] select-none hover:drop-shadow-[0px_0px_30px_rgba(255,0,123,1)] transition-all"
         >
           {t("logo")}
         </Link>
@@ -67,16 +67,13 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
         )}
         {session ? (
           <Button
-            className="bg-[var(--color-red)] text-white cursor-pointer hover:bg-[#b21c11]"
+            className="animated-button"
             onClick={() => signOut({ callbackUrl: "/" })}
           >
             {t("logout")}
           </Button>
         ) : (
-          <Button
-            className="bg-[var(--color-red)] text-white cursor-pointer hover:bg-[#b21c11]"
-            onClick={() => signIn("google")}
-          >
+          <Button className="animated-button" onClick={() => signIn("google")}>
             {t("adminLogin")}
           </Button>
         )}
@@ -84,10 +81,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
       {/* MOBILE DRAWER PANEL */}
       <Sheet>
         <SheetTrigger asChild className="md:hidden">
-          <Button
-            className="bg-[var(--color-red)] text-white cursor-pointer hover:bg-[#b21c11]"
-            size="icon"
-          >
+          <Button className="animated-button" size="icon">
             <GlassWater />
           </Button>
         </SheetTrigger>
@@ -109,14 +103,14 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
 
               {session ? (
                 <Button
-                  className="bg-[var(--color-red)] text-white cursor-pointer hover:bg-[#b21c11]"
+                  className="animated-button"
                   onClick={() => signOut({ callbackUrl: "/" })}
                 >
                   {t("logout")}
                 </Button>
               ) : (
                 <Button
-                  className="bg-[var(--color-red)] text-white cursor-pointer hover:bg-[#b21c11]"
+                  className="animated-button"
                   onClick={() => signIn("google")}
                 >
                   {t("adminLogin")}
@@ -143,7 +137,7 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
         </SheetContent>
       </Sheet>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

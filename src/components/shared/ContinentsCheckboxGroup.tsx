@@ -22,8 +22,10 @@ const ContinentsCheckboxGroup = ({
         : selectedValues.filter((v) => v !== option);
       onValueChange(newSelected);
     } else {
-      const newSelected = checked ? option : [];
-      onValueChange(newSelected);
+      const newSelected = checked
+        ? option
+        : { continentEng: "", continentUkr: "" };
+      onValueChange(newSelected as Continent);
     }
   };
 
@@ -32,6 +34,7 @@ const ContinentsCheckboxGroup = ({
       {options.map((item: Continent) => (
         <div className="flex items-center space-x-2" key={item.continentEng}>
           <Checkbox
+            className="cursor-pointer"
             id={item.continentEng}
             checked={
               selectedValues.length > 0 &&
@@ -39,7 +42,7 @@ const ContinentsCheckboxGroup = ({
             }
             onCheckedChange={(checked) => handleToggle(item, checked)}
           />
-          <label htmlFor={item.continentEng}>
+          <label className="cursor-pointer" htmlFor={item.continentEng}>
             {locale === "en" ? item.continentEng : item.continentUkr}
           </label>
         </div>

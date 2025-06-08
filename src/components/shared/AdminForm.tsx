@@ -264,7 +264,7 @@ const AdminForm = () => {
           )}
         />
         <Button
-          className="w-full bg-[var(--color-red)] mb-4"
+          className="w-full mb-4 group animated-button"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : "Submit"}
