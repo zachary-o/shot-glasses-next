@@ -1,4 +1,5 @@
 import { multiSelectVariants } from "@/components/shared/CountriesSelect";
+import { ShotGlass } from "@prisma/client";
 import { type VariantProps } from "class-variance-authority";
 
 export type GeoType = {
@@ -32,3 +33,9 @@ export type ContinentsCheckboxGroupProps = {
   onValueChange: (value: Continent | Continent[] | null) => void;
   options: Continent[];
 };
+
+export type CreateShotGlassInput = Omit<
+  ShotGlass,
+  "id" | "createdAt" | "updatedAt"
+>;
+

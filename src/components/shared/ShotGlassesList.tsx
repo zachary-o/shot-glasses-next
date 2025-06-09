@@ -1,26 +1,40 @@
 "use client";
 
-import { useShotGlasses } from "@/context/ShotGlassesContext";
+import { useShotGlassesData } from "@/hooks/useShotGlassesData";
+import { useEffect } from "react";
 import { useLoadingBar } from "react-top-loading-bar";
 import ShotGlassCard from "./ShotGlassCard";
+import { toast } from "sonner";
+import { ShotGlass } from "@prisma/client";
 
-const ShotGlassesList = () => {
-  const { shotGlasses, isLoadingShotGlasses, error } = useShotGlasses();
-  const { start, complete } = useLoadingBar();
+const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
+  const {
+    data: shotGlasses,
+    isLoading,
+    error,
+  } = useShotGlassesData(initialItems);
+
+  const loadingBar = useLoadingBar();
 
   if (error) {
-    return "CREATE AN ERROR BOUNDARY COMPONENT!!!!!";
+    toast.error(
+      `Failed to load items. Please try again. Error: ${error.message}`
+    );
   }
 
-  if (isLoadingShotGlasses) {
-    start();
-  } else {
-    complete();
-  }
+  useEffect(() => {
+    if (!loadingBar) return;
+
+    if (isLoading) {
+      loadingBar.start();
+    } else {
+      loadingBar.complete();
+    }
+  }, [isLoading, loadingBar]);
 
   return (
     <div>
-      {shotGlasses.map((shotGlass) => (
+      {shotGlasses?.map((shotGlass: ShotGlass) => (
         <ShotGlassCard key={shotGlass.id} {...shotGlass} />
       ))}
     </div>

@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { continentsArr, geoList } from "@/geoData";
+import { useShotGlassMutations } from "@/hooks/useShotGlassMutations";
 import { shotGlassFormSchema } from "@/schemas/shotGlassSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoadingBar } from "react-top-loading-bar";
 import { toast } from "sonner";
@@ -23,8 +23,9 @@ import { CountriesSelect } from "./CountriesSelect";
 import { DatePicker } from "./DatePicker";
 
 const AdminForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { createShotGlass, isCreating } = useShotGlassMutations();
   const { start, complete } = useLoadingBar();
+  
   const form = useForm<z.infer<typeof shotGlassFormSchema>>({
     resolver: zodResolver(shotGlassFormSchema),
     defaultValues: {
@@ -46,7 +47,6 @@ const AdminForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
-    setIsSubmitting(true);
     start();
     try {
       const imageFile = values.image[0];
@@ -78,22 +78,13 @@ const AdminForm = () => {
         imageUrl,
       };
 
-      const res = await fetch("/api/shotGlasses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) throw new Error("Saving to DB failed.");
+      createShotGlass(payload);
 
       toast.success("Shot glass has been added successfully!");
     } catch (error) {
       console.error("Error adding a shot glass", error);
       toast.error("Uploading failed. Please try again.");
     } finally {
-      setIsSubmitting(false);
       complete();
       form.reset();
     }
@@ -265,9 +256,9 @@ const AdminForm = () => {
         />
         <Button
           className="w-full mb-4 group animated-button"
-          disabled={isSubmitting}
+          disabled={isCreating}
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          {isCreating ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>

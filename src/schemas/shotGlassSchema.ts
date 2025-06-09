@@ -26,8 +26,11 @@ const countrySchema = z
 export const shotGlassFormSchema = z.object({
   image: z
     .any()
-    .refine((file) => file?.length === 0, "Image is required.")
-    .refine((file) => file?.size <= MAX_FILE_SIZE, "Max image size is 5MB."),
+    .refine((file) => file?.length == 1, "Image is required.")
+    .refine(
+      (file) => file?.[0].size <= MAX_FILE_SIZE,
+      "Max image size is 5MB."
+    ),
   cityEng: z
     .string()
     .min(2, { message: "Name must be at least 2 characters long." }),

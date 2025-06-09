@@ -5,6 +5,6 @@ export const getAllShotGlasses = async (): Promise<ShotGlass[]> => {
   try {
     return await prisma.shotGlass.findMany();
   } catch (error) {
-    throw new Error(`Failed to fetch teams: ${error}`);
+    throw new Error(`Failed to fetch shot glasses: ${error}`);
   }
 };

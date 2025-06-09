@@ -2,9 +2,9 @@
 
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LoadingBarContainer } from "react-top-loading-bar";
-import TopLoadingBarTrigger from "./TopLoadingBarTrigger";
 
 const Providers = ({
   children,
@@ -15,6 +15,8 @@ const Providers = ({
   locale: string;
   messages: Record<string, string>;
 }) => {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <SessionProvider>
       <NextIntlClientProvider
@@ -22,15 +24,16 @@ const Providers = ({
         messages={messages}
         timeZone="Europe/Kyiv"
       >
-        <LoadingBarContainer
-          props={{
-            color: "var(--color-red)",
-            height: 2,
-          }}
-        >
-          <TopLoadingBarTrigger />
-          {children}
-        </LoadingBarContainer>
+        <QueryClientProvider client={queryClient}>
+          <LoadingBarContainer
+            props={{
+              color: "var(--color-red)",
+              height: 2,
+            }}
+          >
+            {children}
+          </LoadingBarContainer>
+        </QueryClientProvider>
       </NextIntlClientProvider>
     </SessionProvider>
   );
