@@ -7,7 +7,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { Locale } from "@/i18n/config";
 import { GlassWater } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";

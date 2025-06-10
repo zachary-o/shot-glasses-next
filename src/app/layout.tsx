@@ -1,12 +1,12 @@
-import Header from "@/components/shared/Header"
-import Providers from "@/components/shared/Providers"
-import { Toaster } from "@/components/ui/sonner"
-import clsx from "clsx"
-import type { Metadata } from "next"
-import { getLocale, getMessages } from "next-intl/server"
-import localFont from "next/font/local"
-import "./globals.css"
-import { getUserLocale } from "./services/locale"
+import Header from "@/components/shared/Header";
+import Providers from "@/components/shared/Providers";
+import { Toaster } from "@/components/ui/sonner";
+import clsx from "clsx";
+import type { Metadata } from "next";
+import { getLocale, getMessages } from "next-intl/server";
+import localFont from "next/font/local";
+import "./globals.css";
+import { getUserLocale } from "./services/locale";
 
 const pacifico = localFont({
   src: "./fonts/Pacifico-Regular.ttf",
@@ -14,7 +14,7 @@ const pacifico = localFont({
   style: "normal",
   display: "swap",
   variable: "--font-pacifico",
-})
+});
 
 const roadUI = localFont({
   src: [
@@ -31,21 +31,23 @@ const roadUI = localFont({
   ],
   variable: "--font-roadUI",
   display: "swap",
-})
+});
 
 export const metadata: Metadata = {
   title: "Shot Glasses",
   description: "Created by Zach Osetskyi",
-}
+};
 
 export default async function RootLayout({
   children,
+  modal,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
-  const locale = await getLocale()
-  const messages = await getMessages()
-  const initialLang = await getUserLocale()
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const initialLang = await getUserLocale();
 
   return (
     <html
@@ -57,8 +59,9 @@ export default async function RootLayout({
           <Header initialLang={initialLang} />
           <Toaster />
           {children}
+          {modal}
         </Providers>
       </body>
     </html>
-  )
+  );
 }
