@@ -33,7 +33,7 @@ const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
   }, [isLoading, loadingBar]);
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+    <div className="grid justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(4,230px)] xl:[grid-template-columns:repeat(5,230px)]">
       {shotGlasses.map((shotGlass: ShotGlass) => (
         <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
       ))}
