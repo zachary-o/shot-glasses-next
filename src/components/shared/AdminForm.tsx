@@ -228,7 +228,7 @@ const AdminForm = () => {
                   options={geoList}
                   value={field.value}
                   onValueChange={field.onChange}
-                  placeholder="Select options"
+                  placeholder="Select country"
                   maxCount={3}
                 />
               </FormControl>
