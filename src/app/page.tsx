@@ -6,16 +6,17 @@ import {
 } from "@/queries/getAllShotGlasses";
 import { Suspense } from "react";
 
-export default async function Home({
-  searchParams,
-  modal,
-}: {
-  searchParams: Promise<GetSearchParams>;
+interface PageProps {
+  searchParams: GetSearchParams | Promise<GetSearchParams>;
   modal: React.ReactNode;
-}) {
-  const resolvedSearchParams = await searchParams;
+}
+
+export default async function Home({ searchParams, modal }: PageProps) {
+  const resolvedSearchParams: GetSearchParams =
+    searchParams instanceof Promise ? await searchParams : searchParams;
+
   const items = await getAllShotGlasses(resolvedSearchParams);
-  
+
   return (
     <main className="flex flex-row gap-14 font-normal space-y-4">
       <Suspense>
