@@ -6,15 +6,14 @@ import {
 } from "@/queries/getAllShotGlasses";
 import { Suspense } from "react";
 
-interface PageProps {
-  searchParams: GetSearchParams | Promise<GetSearchParams>;
+export default async function Home({
+  searchParams,
+  modal,
+}: {
+  searchParams: Promise<GetSearchParams>;
   modal: React.ReactNode;
-}
-
-export default async function Home({ searchParams, modal }: PageProps) {
-  const resolvedSearchParams: GetSearchParams =
-    searchParams instanceof Promise ? await searchParams : searchParams;
-
+}) {
+  const resolvedSearchParams = await searchParams;
   const items = await getAllShotGlasses(resolvedSearchParams);
 
   return (
