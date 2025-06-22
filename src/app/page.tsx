@@ -7,16 +7,15 @@ import {
 import { Suspense } from "react";
 
 export default async function Home({
-  searchParams: searchParamsPromise,
+  searchParams,
   modal,
 }: {
-  searchParams: GetSearchParams;
+  searchParams: Promise<GetSearchParams>;
   modal: React.ReactNode;
 }) {
-  const searchParams = await searchParamsPromise;
-
-  const items = await getAllShotGlasses(searchParams);
-
+  const resolvedSearchParams = await searchParams;
+  const items = await getAllShotGlasses(resolvedSearchParams);
+  
   return (
     <main className="flex flex-row gap-14 font-normal space-y-4">
       <Suspense>

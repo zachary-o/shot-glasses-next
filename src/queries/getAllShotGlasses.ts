@@ -8,7 +8,7 @@ export interface GetSearchParams {
 }
 
 export const getAllShotGlasses = async (
-  searchParams: GetSearchParams
+  searchParams: GetSearchParams // This stays the same - it's now the resolved object
 ): Promise<ShotGlass[]> => {
   const continents = searchParams.continents?.split(",") || [];
   const countries = searchParams.countries?.split(",") || [];
