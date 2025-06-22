@@ -4,8 +4,8 @@ import { ShotGlass } from "@prisma/client";
 import { Info } from "lucide-react";
 import { useLocale } from "next-intl";
 import Image from "next/image";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const ShotGlassCard = ({ shotGlass }: { shotGlass: ShotGlass }) => {
   const locale = useLocale();

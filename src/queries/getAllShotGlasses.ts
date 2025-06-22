@@ -1,17 +1,30 @@
 import { prisma } from "@/prisma";
 import { ShotGlass } from "@prisma/client";
-
 export interface GetSearchParams {
-  query?: string
-  sortBy?: string
-  continents?: string
-  countries?: string
+  query?: string;
+  sortBy?: string;
+  continents?: string;
+  countries?: string;
 }
 
+export const getAllShotGlasses = async (
+  searchParams: GetSearchParams
+): Promise<ShotGlass[]> => {
+  const continents = searchParams.continents?.split(",") || [];
+  const countries = searchParams.countries?.split(",") || [];
 
-export const getAllShotGlasses = async (params: GetSearchParams): Promise<ShotGlass[]> => {
+  const where: Record<string, unknown> = {};
+
+  if (continents.length > 0) {
+    where.continentEng = { in: continents };
+  }
+
+  if (countries.length > 0) {
+    where.countryEng = { in: countries };
+  }
+
   try {
-    return await prisma.shotGlass.findMany();
+    return await prisma.shotGlass.findMany({ where });
   } catch (error) {
     throw new Error(`Failed to fetch shot glasses: ${error}`);
   }

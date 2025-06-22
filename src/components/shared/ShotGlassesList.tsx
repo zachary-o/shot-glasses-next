@@ -1,20 +1,25 @@
 "use client";
 
 import { useShotGlassesData } from "@/hooks/useShotGlassesData";
+import { ShotGlass } from "@prisma/client";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useLoadingBar } from "react-top-loading-bar";
-import ShotGlassCard from "./ShotGlassCard";
 import { toast } from "sonner";
-import { ShotGlass } from "@prisma/client";
+import ShotGlassCard from "./ShotGlassCard";
 
 const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
+  const loadingBar = useLoadingBar();
+  const searchParams = useSearchParams();
+
+  const continents = searchParams.get("continents") || "";
+  const countries = searchParams.get("countries") || "";
+
   const {
     data: shotGlasses,
     isLoading,
     error,
-  } = useShotGlassesData(initialItems);
-
-  const loadingBar = useLoadingBar();
+  } = useShotGlassesData(initialItems, { continents, countries });
 
   if (error) {
     toast.error(
@@ -33,11 +38,12 @@ const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
   }, [isLoading, loadingBar]);
 
   return (
-    <div className="grid justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(4,230px)] xl:[grid-template-columns:repeat(5,230px)]">
+    <div className="flex-1 grid gap-y-4 justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)]">
       {shotGlasses.map((shotGlass: ShotGlass) => (
         <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
       ))}
     </div>
   );
 };
+
 export default ShotGlassesList;

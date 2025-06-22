@@ -33,22 +33,16 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     {
       isMulti,
       options,
-      value,
       onValueChange,
-      placeholder = "Select options",
+      placeholder,
       maxCount = 3,
       modalPopover = false,
       className,
-      ...props
     },
     ref
   ) => {
     const locale = useLocale();
-    const selectedValues: Country[] = Array.isArray(value)
-      ? value.filter((v) => v.nameEng)
-      : value && value.nameEng
-      ? [value]
-      : [];
+    const [selectedValues, setSelectedValues] = useState<Country[]>([]);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     const handleInputKeyDown = (
@@ -70,17 +64,19 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         )
           ? selectedValues.filter((item) => item.nameEng !== option.nameEng)
           : [...selectedValues, option];
-
+        setSelectedValues(newSelectedValues);
         onValueChange(newSelectedValues);
       } else {
         const isSame =
           selectedValues.length > 0 &&
           selectedValues[0].nameEng === option.nameEng;
+        setSelectedValues(isSame ? [] : [option]);
         onValueChange(isSame ? [] : option);
       }
     };
 
     const handleClear = () => {
+      setSelectedValues([]);
       onValueChange({ nameEng: "", nameUkr: "" });
     };
 
@@ -102,7 +98,6 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         <PopoverTrigger asChild>
           <Button
             ref={ref}
-            {...props}
             onClick={handleTogglePopover}
             className={cn(
               "flex w-full p-2 rounded-md border h-9 items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
@@ -180,7 +175,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0"
+          className="w-42 p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >

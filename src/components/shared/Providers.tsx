@@ -1,10 +1,11 @@
 "use client";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import { ReactNode, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LoadingBarContainer } from "react-top-loading-bar";
+import { Toaster } from "../ui/sonner";
 
 const Providers = ({
   children,
@@ -31,6 +32,7 @@ const Providers = ({
               height: 2,
             }}
           >
+            <Toaster />
             {children}
           </LoadingBarContainer>
         </QueryClientProvider>

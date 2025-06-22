@@ -1,11 +1,17 @@
 import { ShotGlass } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 
-export function useShotGlassesData(initialData: ShotGlass[]) {
+export function useShotGlassesData(
+  initialData: ShotGlass[],
+  searchParams: { continents?: string; countries: string }
+) {
+  const queryKey = ["shotGlasses", searchParams];
+
   return useQuery({
-    queryKey: ["shotGlasses"],
+    queryKey,
     queryFn: async () => {
-      const response = await fetch("/api/shotGlasses");
+      const query = new URLSearchParams(searchParams).toString();
+      const response = await fetch(`/api/shotGlasses?${query}`);
       if (!response.ok) throw new Error("Failed to fetch shot glasses");
       return response.json();
     },

@@ -15,10 +15,10 @@ export type Country = Pick<GeoType, "nameEng" | "nameUkr">;
 export interface MultiSelectProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value">,
     VariantProps<typeof multiSelectVariants> {
-  options: GeoType[];
+  options: GeoType[] | Country[];
   isMulti: boolean;
-  value: Country | Country[];
-  onValueChange: (value: Country | Country[]) => void;
+  value?: Country | Country[];
+  onValueChange: (value: Country | Country[] | string[]) => void;
   defaultValue?: string[];
   placeholder?: string;
   maxCount?: number;
@@ -28,9 +28,9 @@ export interface MultiSelectProps
 }
 
 export type ContinentsCheckboxGroupProps = {
-  value: Continent | Continent[] | null;
+  value?: Continent | Continent[];
   isMulti: boolean;
-  onValueChange: (value: Continent | Continent[] | null) => void;
+  onValueChange: (value: Continent | Continent[] | string[]) => void;
   options: Continent[];
 };
 
@@ -38,4 +38,3 @@ export type CreateShotGlassInput = Omit<
   ShotGlass,
   "id" | "createdAt" | "updatedAt"
 >;
-

@@ -79,8 +79,8 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
       </div>
       {/* MOBILE DRAWER PANEL */}
       <Sheet>
-        <SheetTrigger asChild className="md:hidden">
-          <Button className="animated-button" size="icon">
+        <SheetTrigger asChild>
+          <Button className="inline md:!hidden animated-button" size="icon">
             <GlassWater />
           </Button>
         </SheetTrigger>
