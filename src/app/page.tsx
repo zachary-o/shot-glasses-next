@@ -10,7 +10,7 @@ export default async function Home({
   searchParams: searchParamsPromise,
   modal,
 }: {
-  searchParams: Promise<GetSearchParams>;
+  searchParams: GetSearchParams;
   modal: React.ReactNode;
 }) {
   const searchParams = await searchParamsPromise;
