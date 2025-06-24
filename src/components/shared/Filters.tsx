@@ -1,44 +1,23 @@
-"use client";
+"use client"
 
-import { continentsArr, geoList } from "@/geoData";
-import { Continent, Country } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
-import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup";
-import { CountriesSelect } from "./CountriesSelect";
+import { continentsArr, geoList } from "@/geoData"
+import { useQueryFilters } from "@/hooks/useQueryFilters"
+import { Continent, Country } from "@/types"
+import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
+import { CountriesSelect } from "./CountriesSelect"
 
 const Filters = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const { updateParams } = useQueryFilters()
 
   const handleContinentChange = (newSelected: Continent[]) => {
-    const continentsEng: string[] = newSelected.map(
-      (country) => country.continentEng
-    );
-    const current = new URLSearchParams(searchParams.toString());
-    if (continentsEng.length > 0) {
-      current.set("continents", continentsEng.join(","));
-    } else {
-      current.delete("continents");
-    }
-
-    const queryString = current.toString();
-    router.push(`?${queryString}`);
-  };
+    const continentsEng = newSelected.map((c) => c.continentEng)
+    updateParams("continents", continentsEng);
+  }
 
   const handleCountryChange = (newSelected: Country[]) => {
-    const countriesEng: string[] = newSelected.map(
-      (country) => country.nameEng
-    );
-    const current = new URLSearchParams(searchParams.toString());
-    if (countriesEng.length > 0) {
-      current.set("countries", countriesEng.join(","));
-    } else {
-      current.delete("countries");
-    }
-
-    const queryString = current.toString();
-    router.push(`?${queryString}`);
-  };
+    const countriesEng = newSelected.map((c) => c.nameEng)
+    updateParams("countries", countriesEng);
+  }
 
   return (
     <div className="flex flex-col gap-4 w-50">
@@ -59,7 +38,7 @@ const Filters = () => {
         maxCount={3}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Filters;
+export default Filters

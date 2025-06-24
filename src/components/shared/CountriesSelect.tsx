@@ -77,7 +77,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
 
     const handleClear = () => {
       setSelectedValues([]);
-      onValueChange({ nameEng: "", nameUkr: "" });
+      onValueChange([]);
     };
 
     const handleTogglePopover = () => {

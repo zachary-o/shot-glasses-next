@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useShotGlassesData(
   initialData: ShotGlass[],
-  searchParams: { continents?: string; countries: string }
+  searchParams: { continents?: string; countries?: string, search?: string, sortBy?: string }
 ) {
   const queryKey = ["shotGlasses", searchParams];
 

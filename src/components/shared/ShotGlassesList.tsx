@@ -14,12 +14,13 @@ const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
 
   const continents = searchParams.get("continents") || "";
   const countries = searchParams.get("countries") || "";
+  const search = searchParams.get("search") || ""
 
   const {
     data: shotGlasses,
     isLoading,
     error,
-  } = useShotGlassesData(initialItems, { continents, countries });
+  } = useShotGlassesData(initialItems, { continents, countries, search });
 
   if (error) {
     toast.error(
