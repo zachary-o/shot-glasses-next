@@ -3,6 +3,7 @@ import SearchInput from "@/components/shared/SearchInput"
 import ShotGlassesList from "@/components/shared/ShotGlassesList"
 import SortDropdown from "@/components/shared/SortDropdown"
 import { getAllShotGlasses, GetSearchParams } from "@/queries/getAllShotGlasses"
+import { getLocale } from "next-intl/server"
 import { Suspense } from "react"
 
 export default async function Home({
@@ -12,8 +13,9 @@ export default async function Home({
   searchParams: Promise<GetSearchParams>
   modal: React.ReactNode
 }) {
+  const locale = await getLocale();
   const resolvedSearchParams = await searchParams
-  const items = await getAllShotGlasses(resolvedSearchParams)
+  const items = await getAllShotGlasses(resolvedSearchParams, locale)
 
   return (
     <main className="flex flex-row gap-14 font-normal space-y-4">

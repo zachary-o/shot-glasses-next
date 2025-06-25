@@ -1,42 +1,48 @@
-"use client";
+"use client"
 
-import { useShotGlassesData } from "@/hooks/useShotGlassesData";
-import { ShotGlass } from "@prisma/client";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useLoadingBar } from "react-top-loading-bar";
-import { toast } from "sonner";
-import ShotGlassCard from "./ShotGlassCard";
+import { useShotGlassesData } from "@/hooks/useShotGlassesData"
+import { ShotGlass } from "@prisma/client"
+import { useSearchParams } from "next/navigation"
+import { useEffect } from "react"
+import { useLoadingBar } from "react-top-loading-bar"
+import { toast } from "sonner"
+import ShotGlassCard from "./ShotGlassCard"
 
 const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
-  const loadingBar = useLoadingBar();
-  const searchParams = useSearchParams();
+  const loadingBar = useLoadingBar()
+  const searchParams = useSearchParams()
 
-  const continents = searchParams.get("continents") || "";
-  const countries = searchParams.get("countries") || "";
+  const continents = searchParams.get("continents") || ""
+  const countries = searchParams.get("countries") || ""
   const search = searchParams.get("search") || ""
+  const sortBy = searchParams.get("sortBy") || ""
 
   const {
     data: shotGlasses,
     isLoading,
     error,
-  } = useShotGlassesData(initialItems, { continents, countries, search });
+  } = useShotGlassesData(initialItems, {
+    continents,
+    countries,
+    search,
+    sortBy,
+  })
 
   if (error) {
     toast.error(
       `Failed to load items. Please try again. Error: ${error.message}`
-    );
+    )
   }
 
   useEffect(() => {
-    if (!loadingBar) return;
+    if (!loadingBar) return
 
     if (isLoading) {
-      loadingBar.start();
+      loadingBar.start()
     } else {
-      loadingBar.complete();
+      loadingBar.complete()
     }
-  }, [isLoading, loadingBar]);
+  }, [isLoading, loadingBar])
 
   return (
     <div className="flex-1 grid gap-y-4 justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)]">
@@ -44,7 +50,7 @@ const ShotGlassesList = ({ initialItems }: { initialItems: ShotGlass[] }) => {
         <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default ShotGlassesList;
+export default ShotGlassesList
