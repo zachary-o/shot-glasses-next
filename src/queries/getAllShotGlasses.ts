@@ -16,6 +16,8 @@ export const getAllShotGlasses = async (
   const search = searchParams.search?.trim() || ""
   const sortBy = searchParams.sortBy?.trim() || ""
 
+  const isLocaleEng = locale === "en"
+
   let where: Prisma.ShotGlassWhereInput = {}
   let orderBy: Prisma.ShotGlassOrderByWithRelationInput = {}
 
@@ -28,34 +30,32 @@ export const getAllShotGlasses = async (
   }
 
   if (search && search.length > 0) {
-    where.OR =
-      locale === "en"
-        ? [
-            { cityEng: { contains: search, mode: "insensitive" } },
-            { countryEng: { contains: search, mode: "insensitive" } },
-            { continentEng: { contains: search, mode: "insensitive" } },
-          ]
-        : [
-            { cityUkr: { contains: search, mode: "insensitive" } },
-            { countryUkr: { contains: search, mode: "insensitive" } },
-            { continentUkr: { contains: search, mode: "insensitive" } },
-          ]
+    where.OR = isLocaleEng
+      ? [
+          { cityEng: { contains: search, mode: "insensitive" } },
+          { countryEng: { contains: search, mode: "insensitive" } },
+          { continentEng: { contains: search, mode: "insensitive" } },
+        ]
+      : [
+          { cityUkr: { contains: search, mode: "insensitive" } },
+          { countryUkr: { contains: search, mode: "insensitive" } },
+          { continentUkr: { contains: search, mode: "insensitive" } },
+        ]
   }
 
   if (sortBy && sortBy.length > 0) {
-    console.log("sortBy", sortBy)
     switch (sortBy) {
       case "cityAsc":
-        orderBy = { [locale === "en" ? "cityEng" : "cityUkr"]: "asc" }
+        orderBy = { [isLocaleEng ? "cityEng" : "cityUkr"]: "asc" }
         break
       case "cityDesc":
-        orderBy = { [locale === "en" ? "cityEng" : "cityUkr"]: "desc" }
+        orderBy = { [isLocaleEng ? "cityEng" : "cityUkr"]: "desc" }
         break
       case "countryAsc":
-        orderBy = { [locale === "en" ? "countryEng" : "countryUkr"]: "asc" }
+        orderBy = { [isLocaleEng ? "countryEng" : "countryUkr"]: "asc" }
         break
       case "countryDesc":
-        orderBy = { [locale === "en" ? "countryEng" : "countryUkr"]: "desc" }
+        orderBy = { [isLocaleEng ? "countryEng" : "countryUkr"]: "desc" }
         break
       // case "popularityAsc":
       //   orderBy = { likes: "asc" }
