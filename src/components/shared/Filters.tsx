@@ -5,8 +5,9 @@ import { useQueryFilters } from "@/hooks/useQueryFilters"
 import { Continent, Country } from "@/types"
 import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
 import { CountriesSelect } from "./CountriesSelect"
+import { cn } from "@/lib/utils"
 
-const Filters = () => {
+const Filters = ({className}: {className: string}) => {
   const { updateParams } = useQueryFilters()
 
   const handleContinentChange = (newSelected: Continent[]) => {
@@ -20,7 +21,7 @@ const Filters = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 w-50">
+    <div className={cn(className, "flex-col gap-4 w-50")}>
       <ContinentsCheckboxGroup
         isMulti={true}
         onValueChange={(newSelected) =>

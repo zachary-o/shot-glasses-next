@@ -1,8 +1,8 @@
-import { cva } from "class-variance-authority";
-import { ChevronDown, XCircle, XIcon } from "lucide-react";
+import { cva } from "class-variance-authority"
+import { ChevronDown, XCircle, XIcon } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -11,27 +11,29 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import { Country, MultiSelectProps } from "@/types";
-import { useLocale } from "next-intl";
-import { forwardRef, useState } from "react";
-import { Checkbox } from "../ui/checkbox";
+} from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+import { Country, MultiSelectProps } from "@/types"
+import { useLocale } from "next-intl"
+import { forwardRef, useEffect, useState } from "react"
+import { Checkbox } from "../ui/checkbox"
+import { useSearchParams } from "next/navigation"
 
 export const multiSelectVariants = cva(
   "m-1 cursor-pointer bg-[var(--color-red)]"
-);
+)
 
 export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
   (
     {
       isMulti,
+      value,
       options,
       onValueChange,
       placeholder,
@@ -41,21 +43,41 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     },
     ref
   ) => {
-    const locale = useLocale();
-    const [selectedValues, setSelectedValues] = useState<Country[]>([]);
-    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const locale = useLocale()
+    const searchParams = useSearchParams()
+
+    const [selectedValues, setSelectedValues] = useState<Country[]>([])
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>
     ) => {
       if (event.key === "Enter") {
-        setIsPopoverOpen(true);
+        setIsPopoverOpen(true)
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
-        const newSelectedValues = [...selectedValues];
-        newSelectedValues.pop();
-        onValueChange(newSelectedValues);
+        const newSelectedValues = [...selectedValues]
+        newSelectedValues.pop()
+        onValueChange(newSelectedValues)
       }
-    };
+    }
+
+    useEffect(() => {
+      const isEmptyValue = (v: any) =>
+        !v || (Array.isArray(v) ? v.length === 0 : v.nameEng === "")
+
+      if (isEmptyValue(value)) {
+        const selected = searchParams.get("continents")?.split(",") || []
+        const matched = options.filter((opt) => selected.includes(opt.nameEng))
+        setSelectedValues([...selectedValues, ...matched])
+      } else {
+        const filtered = Array.isArray(value)
+          ? value.filter((v) => v.nameEng)
+          : value?.nameEng
+          ? [value]
+          : []
+        setSelectedValues(filtered)
+      }
+    }, [value, searchParams, options])
 
     const handleToggle = (option: Country) => {
       if (isMulti) {
@@ -63,32 +85,33 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           (item) => item.nameEng === option.nameEng
         )
           ? selectedValues.filter((item) => item.nameEng !== option.nameEng)
-          : [...selectedValues, option];
-        setSelectedValues(newSelectedValues);
-        onValueChange(newSelectedValues);
+          : [...selectedValues, option]
+        setSelectedValues(newSelectedValues)
+        onValueChange(newSelectedValues)
       } else {
+        console.log("option", option)
         const isSame =
           selectedValues.length > 0 &&
-          selectedValues[0].nameEng === option.nameEng;
-        setSelectedValues(isSame ? [] : [option]);
-        onValueChange(isSame ? [] : option);
+          selectedValues[0].nameEng === option.nameEng
+        setSelectedValues(isSame ? [] : [option])
+        onValueChange(isSame ? [] : option)
       }
-    };
+    }
 
     const handleClear = () => {
-      setSelectedValues([]);
-      onValueChange([]);
-    };
+      setSelectedValues([])
+      onValueChange([])
+    }
 
     const handleTogglePopover = () => {
-      setIsPopoverOpen((prev) => !prev);
-    };
+      setIsPopoverOpen((prev) => !prev)
+    }
 
     const clearExtraOptions = () => {
-      const newSelectedValues = selectedValues.slice(0, maxCount);
-      onValueChange(newSelectedValues);
-    };
-
+      const newSelectedValues = selectedValues.slice(0, maxCount)
+      onValueChange(newSelectedValues)
+    }
+    // console.log("selectedValues.length", selectedValues)
     return (
       <Popover
         open={isPopoverOpen}
@@ -112,7 +135,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                     .map((selectedValue, index) => {
                       const option = options.find(
                         (obj) => obj.nameEng === selectedValue.nameEng
-                      );
+                      )
                       return (
                         <Badge
                           className="bg-[var(--color-red)]"
@@ -122,15 +145,15 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                           <XCircle
                             className="ml-2 h-4 w-4 cursor-pointer"
                             onClick={(event) => {
-                              event.stopPropagation();
+                              event.stopPropagation()
                               handleToggle({
                                 nameEng: selectedValue.nameEng,
                                 nameUkr: selectedValue.nameUkr,
-                              });
+                              })
                             }}
                           />
                         </Badge>
-                      );
+                      )
                     })}
                   {selectedValues.length > maxCount && (
                     <Badge
@@ -142,8 +165,8 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                       <XCircle
                         className="ml-2 h-4 w-4 cursor-pointer"
                         onClick={(event) => {
-                          event.stopPropagation();
-                          clearExtraOptions();
+                          event.stopPropagation()
+                          clearExtraOptions()
                         }}
                       />
                     </Badge>
@@ -153,8 +176,8 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                   <XIcon
                     className="h-4 mx-2 cursor-pointer text-muted-foreground"
                     onClick={(event) => {
-                      event.stopPropagation();
-                      handleClear();
+                      event.stopPropagation()
+                      handleClear()
                     }}
                   />
                   <Separator
@@ -193,7 +216,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                   {options.map((optionObj) => {
                     const isSelected = selectedValues
                       .map((item: Country) => item.nameEng)
-                      .includes(optionObj.nameEng);
+                      .includes(optionObj.nameEng)
                     return (
                       <CommandItem
                         key={optionObj.nameEng}
@@ -201,7 +224,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                           handleToggle({
                             nameEng: optionObj.nameEng,
                             nameUkr: optionObj.nameUkr,
-                          });
+                          })
                         }}
                         className="cursor-pointer hover:!bg-[#FEE4E1]"
                       >
@@ -212,7 +235,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                             : optionObj.nameUkr}
                         </span>
                       </CommandItem>
-                    );
+                    )
                   })}
                 </CommandGroup>
               </CommandList>
@@ -249,8 +272,8 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           </Command>
         </PopoverContent>
       </Popover>
-    );
+    )
   }
-);
+)
 
-CountriesSelect.displayName = "CountriesSelect";
+CountriesSelect.displayName = "CountriesSelect"

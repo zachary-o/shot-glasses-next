@@ -1,41 +1,46 @@
-import { Continent, ContinentsCheckboxGroupProps } from "@/types";
-import { useLocale } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Checkbox } from "../ui/checkbox";
+import { Continent, ContinentsCheckboxGroupProps } from "@/types"
+import { useLocale } from "next-intl"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { Checkbox } from "../ui/checkbox"
 
 const ContinentsCheckboxGroup = ({
   isMulti,
+  value,
   onValueChange,
   options,
 }: ContinentsCheckboxGroupProps) => {
-  const locale = useLocale();
-  const [selectedValues, setSelectedValues] = useState<Continent[]>([]);
-  const searchParams = useSearchParams();
+  const locale = useLocale()
+  const searchParams = useSearchParams()
+  const [selectedValues, setSelectedValues] = useState<Continent[]>([])
 
   useEffect(() => {
-    const selected = searchParams.get("continents")?.split(",") || [];
-    const matched = options.filter((opt) =>
-      selected.includes(opt.continentEng)
-    );
-    setSelectedValues(matched);
-  }, [searchParams, options]);
+    if (!value || (Array.isArray(value) && value.length === 0)) {
+      const selected = searchParams.get("continents")?.split(",") || []
+      const matched = options.filter((opt) =>
+        selected.includes(opt.continentEng)
+      )
+      setSelectedValues(matched)
+    } else {
+      setSelectedValues(Array.isArray(value) ? value : [value])
+    }
+  }, [value, searchParams, options])
 
   const handleToggle = (option: Continent, checked: string | boolean) => {
     if (isMulti) {
       const newSelected = checked
         ? [...selectedValues, option]
-        : selectedValues.filter((v) => v.continentEng !== option.continentEng);
-      setSelectedValues(newSelected);
-      onValueChange(newSelected);
+        : selectedValues.filter((v) => v.continentEng !== option.continentEng)
+      setSelectedValues(newSelected)
+      onValueChange(newSelected)
     } else {
       const newSelected = checked
         ? option
-        : { continentEng: "", continentUkr: "" };
-      setSelectedValues([newSelected]);
-      onValueChange(newSelected);
+        : { continentEng: "", continentUkr: "" }
+      setSelectedValues([newSelected])
+      onValueChange(newSelected)
     }
-  };
+  }
 
   return (
     <>
@@ -55,7 +60,7 @@ const ContinentsCheckboxGroup = ({
         </div>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default ContinentsCheckboxGroup;
+export default ContinentsCheckboxGroup
