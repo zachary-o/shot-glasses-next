@@ -8,22 +8,19 @@ export function useShotGlassMutations() {
 
   const createShotGlassMutation = useMutation({
     mutationFn: async (newShotGlass: CreateShotGlassInput) => {
-      console.log("newShotGlass", newShotGlass)
       const response = await fetch("/api/shotGlasses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newShotGlass),
       })
-      console.log("response", response)
+      const result = await response.json();
       if (!response.ok) {
         toast.error("Failed to create shot glass")
         throw new Error("Failed to create shot glass")
       }
-      console.log("response.json();", response.json())
-      return response.json()
+      return result;
     },
     onMutate: async (newShotGlass) => {
-      console.log("newShotGlass", newShotGlass)
       await queryClient.cancelQueries({ queryKey: ["shotGlasses"] })
       const currentShotGlasses =
         queryClient.getQueryData<ShotGlass[]>(["shotGlasses"]) ?? []
@@ -31,11 +28,9 @@ export function useShotGlassMutations() {
         ["shotGlasses"],
         (old: CreateShotGlassInput[]) => [...(old ?? []), newShotGlass]
       )
-      console.log("CHECK 5")
       return { currentShotGlasses }
     },
     onError: (err, variables, context) => {
-      console.log("CHECK 6", err)
       queryClient.setQueryData(["shotGlasses"], context?.currentShotGlasses)
     },
     onSettled: () => {

@@ -62,20 +62,15 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     }
 
     useEffect(() => {
-      const isEmptyValue = (v: any) =>
-        !v || (Array.isArray(v) ? v.length === 0 : v.nameEng === "")
-
-      if (isEmptyValue(value)) {
+      if (!value || (Array.isArray(value) && value.length === 0)) {
         const selected = searchParams.get("continents")?.split(",") || []
         const matched = options.filter((opt) => selected.includes(opt.nameEng))
+        // console.log('selected', selected)
+        // console.log('matched', matched)
         setSelectedValues([...selectedValues, ...matched])
       } else {
-        const filtered = Array.isArray(value)
-          ? value.filter((v) => v.nameEng)
-          : value?.nameEng
-          ? [value]
-          : []
-        setSelectedValues(filtered)
+        // console.log('value', value)
+        setSelectedValues(Array.isArray(value) ? value : [value])
       }
     }, [value, searchParams, options])
 
@@ -89,7 +84,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         setSelectedValues(newSelectedValues)
         onValueChange(newSelectedValues)
       } else {
-        console.log("option", option)
+        // console.log('option', option)
         const isSame =
           selectedValues.length > 0 &&
           selectedValues[0].nameEng === option.nameEng
@@ -111,7 +106,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       const newSelectedValues = selectedValues.slice(0, maxCount)
       onValueChange(newSelectedValues)
     }
-    // console.log("selectedValues.length", selectedValues)
+    console.log('selectedValues', selectedValues)
     return (
       <Popover
         open={isPopoverOpen}
