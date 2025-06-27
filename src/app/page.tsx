@@ -10,7 +10,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { getAllShotGlasses, GetSearchParams } from "@/queries/getAllShotGlasses"
+import { getAllShotGlasses } from "@/queries/getAllShotGlasses"
+import { GetSearchParams } from "@/types"
 import { ListFilter } from "lucide-react"
 import { getLocale } from "next-intl/server"
 import { Suspense } from "react"
@@ -56,7 +57,10 @@ export default async function Home({
           <SearchInput />
           <SortDropdown />
         </div>
-        <ShotGlassesList initialItems={items} />
+        <ShotGlassesList
+          initialItems={items}
+          searchParams={resolvedSearchParams}
+        />
       </div>
       {modal}
     </main>

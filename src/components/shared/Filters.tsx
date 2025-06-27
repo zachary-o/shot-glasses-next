@@ -2,10 +2,10 @@
 
 import { continentsArr, geoList } from "@/geoData"
 import { useQueryFilters } from "@/hooks/useQueryFilters"
+import { cn } from "@/lib/utils"
 import { Continent, Country } from "@/types"
 import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
 import { CountriesSelect } from "./CountriesSelect"
-import { cn } from "@/lib/utils"
 
 const Filters = ({className}: {className: string}) => {
   const { updateParams } = useQueryFilters()

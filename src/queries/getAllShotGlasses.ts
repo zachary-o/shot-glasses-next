@@ -1,11 +1,6 @@
 import { prisma } from "@/prisma"
+import { GetSearchParams } from "@/types"
 import { Prisma, ShotGlass } from "@prisma/client"
-export interface GetSearchParams {
-  search?: string
-  sortBy?: string
-  continents?: string
-  countries?: string
-}
 
 export const getAllShotGlasses = async (
   searchParams: GetSearchParams,
@@ -69,7 +64,10 @@ export const getAllShotGlasses = async (
   }
 
   try {
-    return await prisma.shotGlass.findMany({ where, orderBy })
+    return await prisma.shotGlass.findMany({
+      where,
+      orderBy,
+    })
   } catch (error) {
     throw new Error(`Failed to fetch shot glasses: ${error}`)
   }

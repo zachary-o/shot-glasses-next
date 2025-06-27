@@ -21,9 +21,9 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { Country, MultiSelectProps } from "@/types"
 import { useLocale } from "next-intl"
+import { useSearchParams } from "next/navigation"
 import { forwardRef, useEffect, useState } from "react"
 import { Checkbox } from "../ui/checkbox"
-import { useSearchParams } from "next/navigation"
 
 export const multiSelectVariants = cva(
   "m-1 cursor-pointer bg-[var(--color-red)]"
@@ -65,12 +65,13 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       if (!value || (Array.isArray(value) && value.length === 0)) {
         const selected = searchParams.get("continents")?.split(",") || []
         const matched = options.filter((opt) => selected.includes(opt.nameEng))
-        // console.log('selected', selected)
-        // console.log('matched', matched)
         setSelectedValues([...selectedValues, ...matched])
       } else {
-        // console.log('value', value)
-        setSelectedValues(Array.isArray(value) ? value : [value])
+        const normalizedValue = Array.isArray(value) ? value : [value]
+        const validValues = normalizedValue.filter(
+          (v) => v.nameEng || v.nameUkr
+        )
+        setSelectedValues(validValues)
       }
     }, [value, searchParams, options])
 
@@ -84,7 +85,6 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         setSelectedValues(newSelectedValues)
         onValueChange(newSelectedValues)
       } else {
-        // console.log('option', option)
         const isSame =
           selectedValues.length > 0 &&
           selectedValues[0].nameEng === option.nameEng
@@ -106,7 +106,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       const newSelectedValues = selectedValues.slice(0, maxCount)
       onValueChange(newSelectedValues)
     }
-    console.log('selectedValues', selectedValues)
+
     return (
       <Popover
         open={isPopoverOpen}
