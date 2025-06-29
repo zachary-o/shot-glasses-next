@@ -24,7 +24,7 @@ export default async function Home({
   modal: React.ReactNode
 }) {
   const locale = await getLocale()
-  const resolvedSearchParams = await searchParams
+  const resolvedSearchParams = await searchParams as GetSearchParams
   const items = await getAllShotGlasses(resolvedSearchParams, locale)
 
   return (
