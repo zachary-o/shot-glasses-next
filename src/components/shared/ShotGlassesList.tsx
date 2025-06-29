@@ -6,8 +6,8 @@ import { ShotGlass } from "@prisma/client"
 import { useEffect, useMemo } from "react"
 import { useLoadingBar } from "react-top-loading-bar"
 import { toast } from "sonner"
-import ShotGlassCard from "./ShotGlassCard"
 import { Button } from "../ui/button"
+import ShotGlassCard from "./ShotGlassCard"
 
 const ShotGlassesList = ({
   initialItems,

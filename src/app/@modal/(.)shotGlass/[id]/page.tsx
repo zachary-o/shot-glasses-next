@@ -1,3 +1,4 @@
+import Map from "@/components/shared/Map";
 import {
   Dialog,
   DialogContent,
@@ -22,9 +23,7 @@ export default async function ShotGlassModal({
             More info about the shot glass #{id}.
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-4">
-          <p>Here you can show the image, description, etc.</p>
-        </div>
+        <Map id={id} />
       </DialogContent>
     </Dialog>
   );
