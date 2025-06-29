@@ -25,19 +25,21 @@ const ShotGlassCard = ({ shotGlass }: { shotGlass: ShotGlass }) => {
           {locale === "en" ? shotGlass.countryEng : shotGlass.countryUkr}
         </span>
         <div className="flex flex-row items-center gap-4">
-          <span>{locale === "en" ? shotGlass.cityEng : shotGlass.cityUkr}</span>
+          <span className="line-clamp-1">
+            {locale === "en" ? shotGlass.cityEng : shotGlass.cityUkr}
+          </span>
           <Tooltip>
             <TooltipTrigger asChild>
               <Info
                 className="hover:cursor-pointer"
-                size={16}
+                size={19}
                 color="#646262"
                 absoluteStrokeWidth
               />
             </TooltipTrigger>
             <TooltipContent>
               <Link href={`/shotGlass/${shotGlass.id}`} scroll={false}>
-                Add to library
+                See on the map
               </Link>
             </TooltipContent>
           </Tooltip>

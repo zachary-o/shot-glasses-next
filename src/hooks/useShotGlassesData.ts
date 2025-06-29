@@ -1,57 +1,56 @@
-import { ShotGlass } from "@prisma/client"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import { ShotGlass } from "@prisma/client";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useShotGlassesData(
   initialData: ShotGlass[],
   searchParams: {
-    continents?: string
-    countries?: string
-    search?: string
-    sortBy?: string
+    continents?: string;
+    countries?: string;
+    search?: string;
+    sortBy?: string;
   },
   pageSize: number
 ) {
-  const queryKey = ["shotGlasses", searchParams]
+  const queryKey = ["shotGlasses", searchParams];
 
   return useInfiniteQuery({
     queryKey,
     queryFn: async ({ pageParam = 0 }) => {
-      const query = new URLSearchParams(searchParams).toString()
-      const response = await fetch(`/api/shotGlasses?${query}`)
-      if (!response.ok) throw new Error("Failed to fetch shot glasses")
+      const query = new URLSearchParams({
+        ...searchParams,
+        skip: String(pageParam),
+        take: String(pageSize),
+      }).toString();
+      const response = await fetch(`/api/shotGlasses?${query}`);
+      if (!response.ok) throw new Error("Failed to fetch shot glasses");
 
-      const allData = await response.json()
-
-      const startIndex = pageParam * pageSize
-      const endIndex = startIndex + pageSize
-      const pageData = allData.slice(startIndex, endIndex)
-
+      const result = await response.json();
       return {
-        data: pageData,
-        nextCursor: endIndex < allData.length ? pageParam + 1 : undefined,
-        hasMore: endIndex < allData.length,
-        total: allData.length,
-      }
+        data: result.data,
+        nextCursor: result.hasMore ? result.nextSkip : undefined,
+        hasMore: result.hasMore,
+      };
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      return lastPage.nextCursor
+      return lastPage.nextCursor;
     },
     initialData:
       initialData.length > 0
         ? {
             pages: [
               {
-                data: initialData.slice(0, pageSize),
-                nextCursor: initialData.length > pageSize ? 1 : undefined,
+                data: initialData,
+                nextCursor:
+                  initialData.length >= pageSize ? pageSize : undefined,
                 hasMore: initialData.length > pageSize,
-                total: initialData.length,
               },
             ],
             pageParams: [0],
           }
         : undefined,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
-  })
+  });
 }

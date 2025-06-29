@@ -52,25 +52,25 @@ const ShotGlassesList = ({
   }
 
   return (
-    <div className="flex-1 grid gap-y-4 justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)]">
-      {shotGlasses.map((shotGlass: ShotGlass) => (
-        <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
-      ))}
-
+    <>
+      <div className="flex-1 grid gap-y-4 justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)] mb-4">
+        {shotGlasses.map((shotGlass: ShotGlass) => (
+          <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
+        ))}
+      </div>
       {hasNextPage && (
         <div className="flex justify-center">
           <Button
             onClick={handleShowMore}
             disabled={isLoading || isFetchingNextPage}
-            variant="outline"
-            className="px-8 py-2"
+            className="animated-button"
           >
             {isFetchingNextPage ? "Loading..." : "Show More"}
           </Button>
         </div>
       )}
-    </div>
-  )
+    </>
+  );
 }
 
 export default ShotGlassesList
