@@ -53,7 +53,7 @@ export default async function RootLayout({
       lang={locale}
       className={clsx(roadUI.variable, pacifico.variable, "min-h-screen")}
     >
-      <body className="max-w-[1278px] bg-[#FFFDFA] mx-auto !px-6 lg:px-2 lg:pt-[20px]">
+      <body className="max-w-[1278px] bg-[#FFFDFA] !mx-auto !px-6 lg:px-2 lg:pt-[20px]">
         <Providers locale={locale} messages={messages}>
           <Header initialLang={initialLang} />
           {children}

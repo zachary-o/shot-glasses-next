@@ -16,7 +16,7 @@ export default async function ShotGlassModal({
 
   return (
     <Dialog open={true}>
-      <DialogContent>
+      <DialogContent className="p-0 w-[1060px] max-w-[1060px] min-h-[540px] bg-white overflow-hidden">
         <DialogHeader>
           <DialogTitle>ShotGlass ID: {id}</DialogTitle>
           <DialogDescription>
