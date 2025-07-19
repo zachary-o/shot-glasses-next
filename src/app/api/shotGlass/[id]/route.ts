@@ -1,9 +1,23 @@
-import { getShotGlassById } from '@/queries/getShotGlassById';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from "@/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const id = req.query.id as string;
-  const item = await getShotGlassById(id);
-  if (!item) return res.status(404).end();
-  res.json(item);
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
+
+  const data = await prisma.shotGlass.findUnique({
+    where: { id: Number(id) },
+  });
+
+  if (!data) {
+    return NextResponse.json({ error: "ShotGlass not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(data);
 }

@@ -1,68 +1,92 @@
-"use client"
+"use client";
 
-import { useShotGlassData } from "@/hooks/useShotGlassData"
-import { ShotGlass } from "@prisma/client"
-import L, { Icon } from "leaflet"
-import { useLocale } from "next-intl"
-import { useEffect } from "react"
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
-import MarkerClusterGroup from "react-leaflet-cluster"
-import { useLoadingBar } from "react-top-loading-bar"
+import { ShotGlass } from "@prisma/client";
+import L, { Icon } from "leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
+import LoadingSpinner from "./LoadingSpinner";
+
+import "leaflet/dist/leaflet.css";
 
 type MapProps = {
-  id: string
-  zoom: number
-  items?: ShotGlass[]
-}
+  data: ShotGlass;
+  city?: string;
+  isError: boolean;
+  isLoading: boolean;
+  zoom: number;
+  items?: ShotGlass[];
+  customStyles: CustomStyles;
+};
+
+type CustomStyles = {
+  width: number | string;
+  height?: number | string;
+  maxHeight?: number | string;
+  borderRadius?: number | string;
+  backgroundColor?: string;
+  marginBottom?: number | string;
+};
 
 interface Cluster {
-  getChildCount: () => number
+  getChildCount: () => number;
 }
 
 const icon = new Icon({
-  iconUrl: "../../../public/assets/icons/pin.png",
+  iconUrl: "/assets/icons/pin.png",
   iconSize: [20, 20],
   iconAnchor: [12, 20],
-})
+});
 
 const bounds: L.LatLngBoundsExpression = [
   [-85, -180],
   [85, 180],
-]
+];
 
-const createCustomClusterIcon = (cluster: any): L.DivIcon => {
+const createCustomClusterIcon = (cluster: Cluster): L.DivIcon => {
   return L.divIcon({
     html: `
-      <div class="
-        w-[30px] h-[30px] rounded-full bg-red-600 border border-gray-800 
-        flex items-center justify-center font-black
+      <div style="
+        width: 30px; 
+        height: 30px; 
+        border-radius: 50%; 
+        background-color: #dc2626; 
+        border: 1px solid #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
       ">
-        <span class="text-white">${cluster.getChildCount()}</span>
+        <span style="color: white;">${cluster.getChildCount()}</span>
       </div>
     `,
     className: "",
     iconSize: L.point(30, 30),
-  })
-}
+  });
+};
 
-const Map = ({ id, zoom, items }: MapProps) => {
-  const { data, isLoading, isError } = useShotGlassData(id)
-  const loadingBar = useLoadingBar()
-  const locale = useLocale()
+const Map = ({
+  data,
+  city,
+  isLoading,
+  isError,
+  zoom,
+  items,
+  customStyles,
+}: MapProps) => {
+  if (isError) return <div>Something went wrong</div>;
+  if (isLoading || !data)
+    return (
+      <div className="h-[400px] w-full flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
 
-  // const city = locale === "uk" ? data.cityUkr : data.cityEng
-
-  useEffect(() => {
-    isLoading ? loadingBar.start() : loadingBar.complete()
-  }, [isLoading])
-
-  if (isError) return <div>Something went wrong</div>
-
-  console.log("data", data)
+  console.log("data", data);
   return (
     <MapContainer
-      center={[Number(data.latitude), Number(data.longitude)]}
+      center={[Number(data?.latitude), Number(data?.longitude)]}
       zoom={zoom}
+      style={customStyles}
       minZoom={2}
       maxZoom={18}
       maxBounds={bounds}
@@ -76,25 +100,25 @@ const Map = ({ id, zoom, items }: MapProps) => {
         >
           {items.map((item) => (
             <Marker
-              key={item.id}
-              position={[Number(item.latitude), Number(item.longitude)]}
+              key={item?.id}
+              position={[Number(item?.latitude), Number(item?.longitude)]}
               icon={icon}
             >
-              {/* <Popup>{city}</Popup> */}
+              <Popup>{city}</Popup>
             </Marker>
           ))}
         </MarkerClusterGroup>
       ) : (
         <Marker
-          position={[Number(data.latitude), Number(data.longitude)]}
+          position={[Number(data?.latitude), Number(data?.longitude)]}
           icon={icon}
         >
           <Popup>
-            {/* <h2>{city}</h2> */}
+            <h2>{city}</h2>
           </Popup>
         </Marker>
       )}
     </MapContainer>
-  )
-}
-export default Map
+  );
+};
+export default Map;
