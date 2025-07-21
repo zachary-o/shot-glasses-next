@@ -17,7 +17,9 @@
     "dragNdrop": "Drag 'n' drop a picture here, or\n",
     "dragNdropSub": "click to select a file"
   },
-  "ShotGlassCard": {
-    
-  }
+  "Dashboard": {
+    "title": "World statistics",
+    "total": "Total"
+  },
+  "ShotGlassCard": {}
 }

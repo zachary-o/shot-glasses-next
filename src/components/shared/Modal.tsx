@@ -1,13 +1,13 @@
 "use client";
 
+import { useLocaleCityName } from "@/hooks/useLocaleCityName";
+import { useShotGlassData } from "@/hooks/useShotGlassData";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import LoadingSpinner from "./LoadingSpinner";
-import { useShotGlassData } from "@/hooks/useShotGlassData";
 import { useEffect } from "react";
 import { useLoadingBar } from "react-top-loading-bar";
-import { useLocale } from "next-intl";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import LoadingSpinner from "./LoadingSpinner";
 
 const customStyles = { height: "400px", width: "100%" };
 
@@ -23,10 +23,8 @@ const Map = dynamic(() => import("@/components/shared/Map"), {
 const Modal = ({ id }: { id: string }) => {
   const router = useRouter();
   const loadingBar = useLoadingBar();
-  const locale = useLocale();
   const { data, isLoading, isError } = useShotGlassData(id);
-
-  const city = locale === "uk" ? data?.cityUkr : data?.cityEng;
+  const city = useLocaleCityName(data?.cityUkr, data?.cityEng);
 
   useEffect(() => {
     if (!loadingBar) return;

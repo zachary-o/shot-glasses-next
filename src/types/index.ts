@@ -49,3 +49,26 @@ export interface GetSearchParams {
   locale?: string;
   [key: string]: string | string[] | undefined;
 }
+
+export type MapProps = {
+  data?: ShotGlass;
+  city?: string;
+  isError?: boolean;
+  isLoading?: boolean;
+  zoom: number;
+  items?: ShotGlass[];
+  customStyles: MapCustomStyles;
+};
+
+export type MapCustomStyles = {
+  width: number | string;
+  height?: number | string;
+  maxHeight?: number | string;
+  borderRadius?: number | string;
+  backgroundColor?: string;
+  marginBottom?: number | string;
+};
+
+export type Cluster = {
+  getChildCount: () => number;
+};

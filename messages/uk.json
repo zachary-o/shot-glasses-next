@@ -17,7 +17,9 @@
     "dragNdrop": "Перетягніть зображення сюди або\n",
     "dragNdropSub": "натисніть, щоб вибрати файл"
   },
-  "ShotGlassCard": {
-    
-  }
+  "Dashboard": {
+    "title": "Статистика по світу",
+    "total": "Всього"
+  },
+  "ShotGlassCard": {}
 }
