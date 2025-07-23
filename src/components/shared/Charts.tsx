@@ -1,4 +1,5 @@
 import Map from "@/components/shared/Map";
+import BarChartCustom from "@/components/shared/BarChartCustom";
 import { ShotGlass } from "@prisma/client";
 import { Suspense, use } from "react";
 import LoadingSpinner from "./LoadingSpinner";
@@ -23,10 +24,22 @@ const customStyles = {
 const Charts = () => {
   const data = use(fetchShotGlasses());
 
+  //WRAP LoadingSpinner inside a div with dynamiv height
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <Map zoom={2} items={data} customStyles={customStyles} />
-    </Suspense>
+    <>
+      <Suspense
+        fallback={
+          <div className="h-[540px] w-full flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <Map zoom={2} items={data} customStyles={customStyles} />
+      </Suspense>
+      <div className="flex flex-row gap-5">
+        <BarChartCustom />
+      </div>
+    </>
   );
 };
 export default Charts;
