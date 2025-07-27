@@ -1,13 +1,13 @@
 "use client";
 
-import { useLocaleCityName } from "@/hooks/useLocaleCityName";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import { useLocaleGeoName } from "@/hooks/useLocaleGeoName";
 import { Cluster, MapProps } from "@/types";
 import { ShotGlass } from "@prisma/client";
 import L, { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import LoadingSpinner from "./LoadingSpinner";
 
 const icon = new Icon({
   iconUrl: "/assets/icons/pin.png",
@@ -27,7 +27,7 @@ const createCustomClusterIcon = (cluster: Cluster): L.DivIcon => {
         width: 30px; 
         height: 30px; 
         border-radius: 50%; 
-        background-color: #dc2626; 
+        background-color: var(--color-red); 
         border: 1px solid #1f2937;
         display: flex;
         align-items: center;
@@ -43,7 +43,7 @@ const createCustomClusterIcon = (cluster: Cluster): L.DivIcon => {
 };
 
 const MapMarker = ({ item }: { item: ShotGlass }) => {
-  const cityName = useLocaleCityName(item.cityEng, item.cityUkr);
+  const cityName = useLocaleGeoName(item.cityEng, item.cityUkr);
 
   return (
     <Marker

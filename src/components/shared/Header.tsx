@@ -1,5 +1,6 @@
 "use client";
 
+import LanguageToggle from "@/components/shared/LanguageToggle";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +16,6 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { setUserLocale } from "../../app/services/locale";
 import { Button } from "../ui/button";
-import LanguageToggle from "./LanguageToggle";
 
 const Header = ({ initialLang }: { initialLang: Locale }) => {
   const t = useTranslations("Header");

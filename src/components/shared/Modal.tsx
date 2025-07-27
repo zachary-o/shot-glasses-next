@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocaleCityName } from "@/hooks/useLocaleCityName";
+import { useLocaleGeoName } from "@/hooks/useLocaleGeoName";
 import { useShotGlassData } from "@/hooks/useShotGlassData";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ const Modal = ({ id }: { id: string }) => {
   const router = useRouter();
   const loadingBar = useLoadingBar();
   const { data, isLoading, isError } = useShotGlassData(id);
-  const city = useLocaleCityName(data?.cityUkr, data?.cityEng);
+  const city = useLocaleGeoName(data?.cityUkr, data?.cityEng);
 
   useEffect(() => {
     if (!loadingBar) return;

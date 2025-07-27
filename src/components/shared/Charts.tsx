@@ -1,8 +1,9 @@
-import Map from "@/components/shared/Map";
 import BarChartCustom from "@/components/shared/BarChartCustom";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import Map from "@/components/shared/Map";
+import PieChartCustom from "@/components/shared/PieChartCustom";
 import { ShotGlass } from "@prisma/client";
 import { Suspense, use } from "react";
-import LoadingSpinner from "./LoadingSpinner";
 
 const fetchShotGlasses = async (): Promise<ShotGlass[]> => {
   const response = await fetch(
@@ -37,7 +38,8 @@ const Charts = () => {
         <Map zoom={2} items={data} customStyles={customStyles} />
       </Suspense>
       <div className="flex flex-row gap-5">
-        <BarChartCustom />
+        <BarChartCustom items={data} />
+        <PieChartCustom />
       </div>
     </>
   );
