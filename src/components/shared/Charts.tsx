@@ -20,6 +20,8 @@ const customStyles = {
   borderRadius: 10,
   backgroundColor: "none",
   marginBottom: 40,
+  boxShadow:
+    "0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1))",
 };
 
 const Charts = () => {
