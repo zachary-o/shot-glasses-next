@@ -6,6 +6,8 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/components/ui/chart";
+import { BAR_CHART_COLORS } from "@/consts";
+import { ChartDataItem, CountryAccumulator } from "@/types";
 import { ShotGlass } from "@prisma/client";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
@@ -17,14 +19,6 @@ const chartConfig = {
     color: "var(--color-red)",
   },
 } satisfies ChartConfig;
-
-type ChartDataItem = {
-  nameEng: string;
-  nameUkr: string;
-  count: number;
-};
-
-type CountryAccumulator = Record<string, ChartDataItem>;
 
 export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
   const locale = useLocale();
@@ -49,13 +43,21 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
       {} as CountryAccumulator
     );
 
-    return Object.values(countsByCountry);
+    const topTenCountriesByCount = Object.values(countsByCountry)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+      .map((item, index) => ({
+        ...item,
+        fill: BAR_CHART_COLORS[index % BAR_CHART_COLORS.length],
+      }));
+
+    return topTenCountriesByCount;
   }, [items]);
 
   return (
-    <Card className="flex-1">
+    <Card className="flex-1 max-h-[400px]">
       <CardHeader>
-        <CardTitle> Showing total shot glasses per country</CardTitle>
+        <CardTitle>Showing total shot glasses per country</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -84,7 +86,7 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
                 return null;
               }}
             />
-            <Bar dataKey="count" fill="var(--color-red)" radius={8} />
+            <Bar dataKey="count" radius={8} />
           </BarChart>
         </ChartContainer>
       </CardContent>

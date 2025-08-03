@@ -22,7 +22,7 @@ const SortDropdown = () => {
   return (
     <select
       className={cn(
-        "appearance-none w-[150px] h-9 rounded-md border bg-transparent px-3 py-1 text-muted-foreground",
+        "appearance-none w-[230px] h-9 rounded-md border bg-transparent px-3 py-1 text-muted-foreground",
         "focus-visible:outline-none focus-visible:border-transparent",
         "focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-0"
       )}

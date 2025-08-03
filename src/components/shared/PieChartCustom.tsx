@@ -1,85 +1,101 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Pie, PieChart } from "recharts";
+import { Cell, Pie, PieChart } from "recharts";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
 } from "@/components/ui/chart";
-
-
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-];
+import { PIE_CHART_COLORS } from "@/consts";
+import { ChartDataItem, ContinentAccumulator } from "@/types";
+import { ShotGlass } from "@prisma/client";
+import { useLocale } from "next-intl";
+import { useMemo } from "react";
 
 const chartConfig = {
-  
-  chrome: {
-    label: "Chrome",
-    color: "blue",
-  },
-  safari: {
-    label: "Safari",
-    color: "red",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "yellow",
-  },
-  edge: {
-    label: "Edge",
-    color: "green",
-  },
-  other: {
-    label: "Other",
-    color: "purple",
+  count: {
+    label: "Country",
+    color: "var(--color-red)",
   },
 } satisfies ChartConfig;
 
-export default function PieChartCustom() {
+export default function PieChartCustom({ items }: { items: ShotGlass[] }) {
+  const locale = useLocale();
+
+  const shotGlassesPieChart: ChartDataItem[] = useMemo(() => {
+    const countsByContinent: ContinentAccumulator = items.reduce(
+      (acc: ContinentAccumulator, curr: ShotGlass) => {
+        if (!acc[curr.continentEng]) {
+          acc[curr.continentEng] = {
+            nameEng: curr.continentEng,
+            nameUkr: curr.continentUkr,
+            count: 1,
+          };
+        } else {
+          acc[curr.continentEng] = {
+            ...acc[curr.continentEng],
+            count: acc[curr.continentEng].count + 1,
+          };
+        }
+        return acc;
+      },
+      {} as ContinentAccumulator
+    );
+
+    return Object.values(countsByContinent);
+  }, [items]);
+
   return (
-    <Card className="flex-1 flex flex-col">
+    <Card className="flex-1 flex flex-col max-h-[400px]">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Showing total shot glasses per continent</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer
-          config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
+        <ChartContainer config={chartConfig}>
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const data = payload[0].payload;
+                  const continentName =
+                    locale === "en" ? data.nameEng : data.nameUkr;
+                  return (
+                    <div
+                      className="bg-white border border-gray-200 rounded-lg p-3"
+                      style={{ boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)" }}
+                    >
+                      <p className="font-medium">{`${continentName}: ${data.count}`}</p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
             />
-            <Pie data={chartData} dataKey="visitors" nameKey="browser" />
+            <Pie
+              data={shotGlassesPieChart}
+              dataKey="count"
+              nameKey={locale === "en" ? "nameEng" : "nameUkr"}
+              cx="50%"
+              cy="50%"
+              outerRadius={150}
+              label={({ nameEng, nameUkr, count }) => {
+                const name = locale === "en" ? nameEng : nameUkr;
+                return `${name}: ${count}`;
+              }}
+            >
+              {shotGlassesPieChart.map((_, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]}
+                />
+              ))}
+            </Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

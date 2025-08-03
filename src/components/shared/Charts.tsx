@@ -7,8 +7,14 @@ import { Suspense, use } from "react";
 
 const fetchShotGlasses = async (): Promise<ShotGlass[]> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/shotGlasses`
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/shotGlasses`,
+    { cache: "force-cache" }
   );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch shot glasses");
+  }
+
   const result = await response.json();
 
   return result.data || [];
@@ -27,21 +33,18 @@ const customStyles = {
 const Charts = () => {
   const data = use(fetchShotGlasses());
 
-  //WRAP LoadingSpinner inside a div with dynamiv height
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="h-[540px] w-full flex items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        }
-      >
+      <Suspense fallback={<LoadingSpinner height="540" />}>
         <Map zoom={2} items={data} customStyles={customStyles} />
       </Suspense>
       <div className="flex flex-row gap-5">
-        <BarChartCustom items={data} />
-        <PieChartCustom />
+        <Suspense fallback={<LoadingSpinner height="400" />}>
+          <BarChartCustom items={data} />
+        </Suspense>
+        <Suspense fallback={<LoadingSpinner height="400" />}>
+          <PieChartCustom items={data} />
+        </Suspense>
       </div>
     </>
   );

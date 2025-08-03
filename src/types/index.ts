@@ -72,3 +72,14 @@ export type MapCustomStyles = {
 export type Cluster = {
   getChildCount: () => number;
 };
+
+export type ChartDataItem = {
+  nameEng: string;
+  nameUkr: string;
+  count: number;
+};
+
+export type Accumulator<T extends string | number | symbol> = Record<T, ChartDataItem>;
+
+export type CountryAccumulator = Accumulator<string>;
+export type ContinentAccumulator = Accumulator<string>;

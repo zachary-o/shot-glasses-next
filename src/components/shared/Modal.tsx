@@ -13,11 +13,7 @@ const customStyles = { height: "400px", width: "100%" };
 
 const Map = dynamic(() => import("@/components/shared/Map"), {
   ssr: false,
-  loading: () => (
-    <div className="h-[400px] w-full flex items-center justify-center">
-      <LoadingSpinner />
-    </div>
-  ),
+  loading: () => <LoadingSpinner height="400" />,
 });
 
 const Modal = ({ id }: { id: string }) => {

@@ -65,12 +65,7 @@ const Map = ({
   customStyles,
 }: MapProps) => {
   if (isError) return <div>Something went wrong</div>;
-  if (isLoading || (!items && !data))
-    return (
-      <div className="h-[400px] w-full flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
+  if (isLoading || (!items && !data)) return <LoadingSpinner height="400" />;
 
   const defaultCenter: [number, number] = [20, 0];
 

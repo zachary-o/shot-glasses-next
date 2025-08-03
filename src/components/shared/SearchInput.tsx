@@ -21,7 +21,7 @@ const SearchInput = () => {
   }
 
   return (
-    <div className="relative w-[200px]">
+    <div className="relative w-[230px]">
       <Search
         className="absolute top-1/2 translate-y-[-50%] left-3"
         size={20}
