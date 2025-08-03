@@ -3,7 +3,7 @@ import { ShotGlass } from "@prisma/client";
 
 export const getAllShotGlasses = async (
   searchParams: GetSearchParams,
-  locale: string
+  locale: string = "en"
 ): Promise<ShotGlass[]> => {
   const queryParams = new URLSearchParams();
 
@@ -18,13 +18,14 @@ export const getAllShotGlasses = async (
   });
 
   queryParams.set("locale", locale);
-  queryParams.set("skip", "0");
-  queryParams.set("take", "10");
+  queryParams.set("skip", searchParams.skip?.toString() || "0");
+  queryParams.set("take", searchParams.take?.toString() || "10");
 
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_SITE_URL
-    }/api/shotGlasses?${queryParams.toString()}`
+    }/api/shotGlasses?${queryParams.toString()}`,
+    { cache: "force-cache" }
   );
 
   if (!res.ok) throw new Error("Failed to fetch initial shot glasses");

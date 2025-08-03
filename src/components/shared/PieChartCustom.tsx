@@ -80,7 +80,7 @@ export default function PieChartCustom({ items }: { items: ShotGlass[] }) {
               nameKey={locale === "en" ? "nameEng" : "nameUkr"}
               cx="50%"
               cy="50%"
-              outerRadius={150}
+              outerRadius={120}
               label={({ nameEng, nameUkr, count }) => {
                 const name = locale === "en" ? nameEng : nameUkr;
                 return `${name}: ${count}`;

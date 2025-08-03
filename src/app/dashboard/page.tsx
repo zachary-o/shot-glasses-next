@@ -1,4 +1,4 @@
-import Charts from "@/components/shared/Charts";
+import Charts from "@/components/shared/Charts.server";
 import PageTitle from "@/components/shared/PageTitle";
 import { getTranslations } from "next-intl/server";
 
