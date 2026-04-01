@@ -59,7 +59,7 @@ const ShotGlassesList = ({
         ))}
       </div>
       {hasNextPage && (
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-4">
           <Button
             onClick={handleShowMore}
             disabled={isLoading || isFetchingNextPage}

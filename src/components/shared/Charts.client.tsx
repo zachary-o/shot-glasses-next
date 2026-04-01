@@ -15,7 +15,7 @@ const Map = dynamic(() => import("@/components/shared/Map"), { ssr: false });
 
 const customStyles = {
   width: "100%",
-  height: 540,
+  height: "clamp(280px, 50vw, 540px)",
   borderRadius: 10,
   backgroundColor: "none",
   marginBottom: 40,
@@ -27,7 +27,7 @@ export default function ChartsClient({ items }: { items: ShotGlass[] }) {
   return (
     <>
       <Map zoom={2} items={items} customStyles={customStyles} />
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-row gap-5 mb-4">
         <BarChartCustom items={items} />
         <PieChartCustom items={items} />
       </div>

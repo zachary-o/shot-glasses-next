@@ -9,6 +9,7 @@ import {
   ChartTooltip,
 } from "@/components/ui/chart";
 import { PIE_CHART_COLORS } from "@/consts";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ChartDataItem, ContinentAccumulator } from "@/types";
 import { ShotGlass } from "@prisma/client";
 import { useLocale } from "next-intl";
@@ -23,6 +24,11 @@ const chartConfig = {
 
 export default function PieChartCustom({ items }: { items: ShotGlass[] }) {
   const locale = useLocale();
+  // DISPLAY TWO CHARTS IN A COLUMN!!!!!!!
+  const { width } = useIsMobile();
+  const outerRadius = Math.min(120, width * 0.12);
+  const fontSize = width < 425 ? 8 : width < 768 ? 10 : 13;
+  const labelOffset = width < 425 ? 14 : width < 768 ? 18 : 28;
 
   const shotGlassesPieChart: ChartDataItem[] = useMemo(() => {
     const countsByContinent: ContinentAccumulator = items.reduce(
@@ -80,10 +86,29 @@ export default function PieChartCustom({ items }: { items: ShotGlass[] }) {
               nameKey={locale === "en" ? "nameEng" : "nameUkr"}
               cx="50%"
               cy="50%"
-              outerRadius={120}
-              label={({ nameEng, nameUkr, count }) => {
+              outerRadius={outerRadius}
+              label={({ cx, cy, midAngle, nameEng, nameUkr, count }) => {
+                const RADIAN = Math.PI / 180;
+                const radius = outerRadius + labelOffset;
+                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                const y = cy + radius * Math.sin(-midAngle * RADIAN);
                 const name = locale === "en" ? nameEng : nameUkr;
-                return `${name}: ${count}`;
+                const display = width < 425
+                  ? `${name.slice(0, 3)}: ${count}`
+                  : `${name}: ${count}`;
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    fill="currentColor"
+                    textAnchor={x > cx ? "start" : "end"}
+                    dominantBaseline="central"
+                    fontSize={fontSize}
+                  >
+                    {display}
+                  </text>
+                );
               }}
             >
               {shotGlassesPieChart.map((_, index) => (

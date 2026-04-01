@@ -55,7 +55,7 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
   }, [items]);
 
   return (
-    <Card className="flex-1 max-h-[400px]">
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Showing total shot glasses per country</CardTitle>
       </CardHeader>
