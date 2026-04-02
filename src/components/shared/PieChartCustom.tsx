@@ -24,10 +24,9 @@ const chartConfig = {
 
 export default function PieChartCustom({ items }: { items: ShotGlass[] }) {
   const locale = useLocale();
-  // DISPLAY TWO CHARTS IN A COLUMN!!!!!!!
   const { width } = useIsMobile();
-  const outerRadius = Math.min(120, width * 0.12);
-  const fontSize = width < 425 ? 8 : width < 768 ? 10 : 13;
+  const outerRadius = Math.min(120, width * 0.13);
+  const fontSize = width < 425 ? 8 : width < 768 ? 10 : 12;
   const labelOffset = width < 425 ? 14 : width < 768 ? 18 : 28;
 
   const shotGlassesPieChart: ChartDataItem[] = useMemo(() => {

@@ -46,13 +46,14 @@ export default async function Home({
               </SheetHeader>
               <div className="p-4">
                 <Suspense>
+                  <SortDropdown /> 
                   <Filters className="flex lg:hidden" />
                 </Suspense>
               </div>
             </SheetContent>
           </Sheet>
           <SearchInput />
-          <SortDropdown />
+          <SortDropdown className="hidden md:block" />
         </div>
         <ShotGlassesList
           initialItems={items}

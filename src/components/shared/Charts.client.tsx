@@ -27,7 +27,7 @@ export default function ChartsClient({ items }: { items: ShotGlass[] }) {
   return (
     <>
       <Map zoom={2} items={items} customStyles={customStyles} />
-      <div className="flex flex-row gap-5 mb-4">
+      <div className="flex flex-col gap-5 mb-4 lg:flex-row">
         <BarChartCustom items={items} />
         <PieChartCustom items={items} />
       </div>

@@ -5,7 +5,6 @@ import { Info } from "lucide-react";
 import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const ShotGlassCard = ({ shotGlass }: { shotGlass: ShotGlass }) => {
   const locale = useLocale();
@@ -28,21 +27,14 @@ const ShotGlassCard = ({ shotGlass }: { shotGlass: ShotGlass }) => {
           <span className="line-clamp-1">
             {locale === "en" ? shotGlass.cityEng : shotGlass.cityUkr}
           </span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Info
-                className="hover:cursor-pointer"
-                size={19}
-                color="#646262"
-                absoluteStrokeWidth
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <Link href={`/shotGlass/${shotGlass.id}`} scroll={false}>
-                See on the map
-              </Link>
-            </TooltipContent>
-          </Tooltip>
+          <Link href={`/shotGlass/${shotGlass.id}`} scroll={false}>
+            <Info
+              className="hover:cursor-pointer"
+              size={19}
+              color="#646262"
+              absoluteStrokeWidth
+            />
+          </Link>
         </div>
       </div>
     </div>

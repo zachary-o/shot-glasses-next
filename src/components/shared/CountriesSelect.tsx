@@ -48,6 +48,12 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
 
     const [selectedValues, setSelectedValues] = useState<Country[]>([])
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+    const [search, setSearch] = useState("")
+
+    const filteredOptions = options.filter((opt) => {
+      const name = locale === "en" ? opt.nameEng : opt.nameUkr
+      return name.toLowerCase().includes(search.toLowerCase())
+    })
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>
@@ -124,7 +130,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           >
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
-                <div className="flex flex-wrap items-center">
+                <div className="flex flex-wrap items-center gap-0.5">
                   {selectedValues
                     .slice(0, maxCount)
                     .map((selectedValue, index) => {
@@ -133,12 +139,15 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                       )
                       return (
                         <Badge
-                          className="bg-[var(--color-red)]"
-                          key={isMulti ? selectedValue.nameEng : index}
+                          className="bg-[var(--color-red)] max-w-[115px]"
+                          key={selectedValue.nameEng}
+                          variant="destructive"
                         >
-                          {locale === "en" ? option?.nameEng : option?.nameUkr}
+                          <span className="truncate">
+                            {locale === "en" ? option?.nameEng : option?.nameUkr}
+                          </span>
                           <XCircle
-                            className="ml-2 h-4 w-4 cursor-pointer"
+                            className="ml-2 h-4 w-4 cursor-pointer shrink-0"
                             onClick={(event) => {
                               event.stopPropagation()
                               handleToggle({
@@ -158,7 +167,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                     >
                       {`+ ${selectedValues.length - maxCount} more`}
                       <XCircle
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                        className="ml-2 h-4 w-4 cursor-pointer shrink-0"
                         onClick={(event) => {
                           event.stopPropagation()
                           clearExtraOptions()
@@ -193,14 +202,16 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-42 p-0"
+          className="w-50 p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
-          <Command className="flex flex-col max-h-[300px]">
+          <Command shouldFilter={false} className="flex flex-col max-h-[300px]">
             <CommandInput
               placeholder="Search..."
+              value={search}
               onKeyDown={handleInputKeyDown}
+              onValueChange={setSearch}
             />
 
             {/* Scrollable list */}
@@ -208,7 +219,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {options.map((optionObj) => {
+                  {filteredOptions.map((optionObj) => {
                     const isSelected = selectedValues
                       .map((item: Country) => item.nameEng)
                       .includes(optionObj.nameEng)

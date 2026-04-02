@@ -12,7 +12,7 @@ const sortOptions = [
   //   { value: "popularityDesc", label: "Popularity ⬇" },
 ]
 
-const SortDropdown = () => {
+const SortDropdown = ({ className }: { className?: string }) => {
   const { updateParams } = useQueryFilters()
 
   const handleSortItems = (option: string) => {
@@ -24,7 +24,8 @@ const SortDropdown = () => {
       className={cn(
         "appearance-none w-[230px] h-9 rounded-md border bg-transparent px-3 py-1 text-muted-foreground",
         "focus-visible:outline-none focus-visible:border-transparent",
-        "focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-0"
+        "focus-visible:ring-4 focus-visible:ring-ring/50 focus-visible:ring-offset-0",
+        className
       )}
       name="sortOptions"
       onChange={(e) => handleSortItems(e.target.value)}

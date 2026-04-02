@@ -7,6 +7,7 @@ import {
   ChartTooltip,
 } from "@/components/ui/chart";
 import { BAR_CHART_COLORS } from "@/consts";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ChartDataItem, CountryAccumulator } from "@/types";
 import { ShotGlass } from "@prisma/client";
 import { useLocale } from "next-intl";
@@ -22,6 +23,13 @@ const chartConfig = {
 
 export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
   const locale = useLocale();
+  const { width } = useIsMobile();
+  let fontSize
+  if (width > 1024) {
+    fontSize = 13
+  } else if (width <= 1024) {
+    fontSize = 8
+  }
 
   const shotGlassesBarChart: ChartDataItem[] = useMemo(() => {
     const countsByCountry: CountryAccumulator = items.reduce(
@@ -71,7 +79,8 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
               tickFormatter={(value) =>
                 value.length > 8 ? value.slice(0, 6) + "..." : value
               }
-              fontSize={12}
+              angle={width <= 1024 ? -45 : 0}
+              fontSize={fontSize}
             />
             <ChartTooltip
               cursor={false}
