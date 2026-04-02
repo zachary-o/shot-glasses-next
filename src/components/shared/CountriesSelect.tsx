@@ -133,7 +133,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
                 <div className="flex flex-wrap items-center gap-0.5">
                   {selectedValues
                     .slice(0, maxCount)
-                    .map((selectedValue, index) => {
+                    .map((selectedValue) => {
                       const option = options.find(
                         (obj) => obj.nameEng === selectedValue.nameEng
                       )
