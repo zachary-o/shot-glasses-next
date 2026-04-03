@@ -20,7 +20,7 @@ const Modal = ({ id }: { id: string }) => {
   const router = useRouter();
   const loadingBar = useLoadingBar();
   const { data, isLoading, isError } = useShotGlassData(id);
-  const city = useLocaleGeoName(data?.cityUkr, data?.cityEng);
+  const city = useLocaleGeoName(data?.cityEng, data?.cityUkr);
 
   useEffect(() => {
     if (!loadingBar) return;
