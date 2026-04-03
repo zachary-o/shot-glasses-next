@@ -1,7 +1,6 @@
 import { CreateShotGlassInput } from "@/types"
 import { ShotGlass } from "@prisma/client"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { toast } from "sonner"
 
 export function useShotGlassMutations() {
   const queryClient = useQueryClient()
