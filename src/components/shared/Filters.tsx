@@ -37,6 +37,7 @@ const Filters = ({className}: {className: string}) => {
         }
         placeholder="Select options"
         maxCount={3}
+        className="w-[230px] lg:w-[200px]"
       />
     </div>
   )

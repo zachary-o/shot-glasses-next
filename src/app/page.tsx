@@ -42,12 +42,13 @@ export default async function Home({
               <SheetHeader aria-label="Sidebar Title">
                 <SheetTitle className="text-[var(--color-red)]">
                   {/* {t("menuTitle")} */}
+                  Filters
                 </SheetTitle>
               </SheetHeader>
               <div className="p-4">
                 <Suspense>
-                  <SortDropdown /> 
                   <Filters className="flex lg:hidden" />
+                  <SortDropdown className="block md:hidden mt-4" /> 
                 </Suspense>
               </div>
             </SheetContent>

@@ -11,9 +11,9 @@ const ShotGlassCard = ({ shotGlass }: { shotGlass: ShotGlass }) => {
 
   //   const { deleteShotGlass, isDeleting } = useShotGlassMutations();
   return (
-    <div className="w-[230px] py-[20px] px-[30px] flex flex-col border border-[#D2D0D0] rounded-sm hover:border-[var(--color-red)] transition-all">
+<div className="w-full min-w-0 py-[20px] px-[30px] flex flex-col border border-[#D2D0D0] rounded-sm hover:border-[var(--color-red)] transition-all">
       <Image
-        className="rounded-sm mb-3"
+        className="rounded-sm mb-3 w-full aspect-square object-cover"
         width={200}
         height={200}
         src={shotGlass.imageUrl}

@@ -193,7 +193,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
               </div>
             ) : (
               <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground mx-3">
+                <span className="text-sm text-muted-foreground">
                   {placeholder}
                 </span>
                 <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
@@ -202,7 +202,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-50 p-0"
+          className="w-[230px] lg:w-[200px] p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >

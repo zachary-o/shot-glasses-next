@@ -1,6 +1,7 @@
 {
   "Header": {
     "logo": "Shot Glasses",
+    "home": "Home",
     "dashboard": "Dashboard",
     "admin": "Admin",
     "adminLogin": "Admin Login",

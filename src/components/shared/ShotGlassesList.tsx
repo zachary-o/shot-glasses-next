@@ -53,7 +53,7 @@ const ShotGlassesList = ({
 
   return (
     <>
-      <div className="flex-1 grid gap-y-4 justify-between [grid-template-columns:repeat(2,230px)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)] mb-4">
+      <div className="flex-1 grid gap-y-4 gap-x-4 justify-center md:justify-between [grid-template-columns:repeat(2,1fr)] md:[grid-template-columns:repeat(3,230px)] lg:[grid-template-columns:repeat(3,230px)] xl:[grid-template-columns:repeat(4,230px)] mb-4">
         {shotGlasses.map((shotGlass: ShotGlass) => (
           <ShotGlassCard key={shotGlass.id} shotGlass={shotGlass} />
         ))}

@@ -17,6 +17,8 @@ import { useState, useTransition } from "react";
 import { setUserLocale } from "../../app/services/locale";
 import { Button } from "../ui/button";
 
+
+
 const Header = ({ initialLang }: { initialLang: Locale }) => {
   const t = useTranslations("Header");
   const { data: session } = useSession();
@@ -29,6 +31,12 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
       setUserLocale(value as Locale);
     });
   }
+
+  const routes = [
+    { name: t("home"), href: "/" },
+    { name: t("dashboard"), href: "/dashboard" },
+    ...(session ? [{ name: t("admin"), href: "/admin" }] : []),
+  ]
 
   return (
     <header className="h-18 flex items-center justify-between mb-10">
@@ -117,26 +125,17 @@ const Header = ({ initialLang }: { initialLang: Locale }) => {
               )}
             </div>
             <div className="flex flex-col gap-4">
-              <Link
-                href="/dashboard"
-                className="text-[var(--color-red)] text-2xl cursor-pointer"
-              >
-                {t("dashboard")}
-              </Link>
-              {session && (
-                <Link
-                  href="/admin"
-                  className="text-[var(--color-red)] text-2xl cursor-pointer"
-                >
-                  {t("admin")}
+              {routes.map((r) => (
+                <Link className="text-[var(--color-red)] text-2xl cursor-pointer" key={r.name} href={r.href}>
+                  {r.name}
                 </Link>
-              )}
+              ))}
             </div>
           </div>
         </SheetContent>
       </Sheet>
     </header>
-  );
+  )
 };
 
 export default Header;

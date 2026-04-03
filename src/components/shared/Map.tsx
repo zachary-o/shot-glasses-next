@@ -84,7 +84,7 @@ const Map = ({
       maxZoom={18}
       maxBounds={bounds}
       maxBoundsViscosity={1.0}
-      className="z-50"
+      className="z-40"
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {items && items.length > 0 ? (
