@@ -35,7 +35,7 @@ const ShotGlassesList = ({
 
   if (error) {
     toast.error(
-      `Failed to load items. Please try again. Error: ${error.message}`
+      `${t("loadingError")} ${error.message}`
     )
   }
 

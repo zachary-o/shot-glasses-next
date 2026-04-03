@@ -15,7 +15,6 @@ export function useShotGlassMutations() {
       })
       const result = await response.json();
       if (!response.ok) {
-        toast.error("Failed to create shot glass")
         throw new Error("Failed to create shot glass")
       }
       return result;

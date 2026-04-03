@@ -16,7 +16,8 @@
     "countriesNoResults": "Нічого не знайдено.",
     "countriesClear": "Очистити",
     "showMoreBtn": "Показати Більше",
-    "loadingBtn": "Завантажується..."
+    "loadingBtn": "Завантажується...",
+    "loadingError": "Не вдалося завантажити елементи. Спробуйте ще раз. Помилка: "
   },
   "Admin": {
     "title": "Додати новеньку рюмочку",
@@ -33,7 +34,9 @@
     "country": "Країна",
     "continent": "Континент",
     "submit": "Надіслати",
-    "submitting": "Надсилається"
+    "submitting": "Надсилається",
+    "successToast": "Рюмочку успішно додано!",
+    "errorToast": "Помилка завантаження. Спробуйте ще раз."
   },
   "Dashboard": {
     "title": "Статистика по світу",
@@ -41,5 +44,16 @@
     "totalPerCountry": "Показ загальної кількості рюмок за країнами",
     "totalPerContinent": "Показ загальної кількості рюмок за континентами"
   },
-  "ShotGlassCard": {}
+  "ShotGlassCard": {},
+  "Validation": {
+    "continentRequired": "Континент є обов'язковим.",
+    "countryRequired": "Країна є обов'язковою.",
+    "imageRequired": "Зображення є обов'язковим.",
+    "imageMaxSize": "Максимальний розмір зображення — 5МБ.",
+    "cityMinLength": "Назва має містити щонайменше 2 символи.",
+    "latitudeRequired": "Широта є обов'язковою.",
+    "latitudeInvalid": "Широта має бути числом від -90 до 90.",
+    "longitudeRequired": "Довгота є обов'язковою.",
+    "longitudeInvalid": "Довгота має бути числом від -180 до 180."
+  }
 }

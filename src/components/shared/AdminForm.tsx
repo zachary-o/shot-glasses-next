@@ -25,11 +25,14 @@ import { DatePicker } from "./DatePicker";
 
 const AdminForm = () => {
   const t = useTranslations("Admin");
+  const tVal = useTranslations("Validation");
   const { createShotGlass, isCreating } = useShotGlassMutations();
   const { start, complete } = useLoadingBar();
-  
-  const form = useForm<z.infer<typeof shotGlassFormSchema>>({
-    resolver: zodResolver(shotGlassFormSchema),
+
+  const schema = shotGlassFormSchema(tVal);
+
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       image: [],
       cityEng: "",
@@ -48,7 +51,7 @@ const AdminForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof shotGlassFormSchema>) {
+  async function onSubmit(values: z.infer<typeof schema>) {
     start();
     try {
       const imageFile = values.image[0];
@@ -82,10 +85,10 @@ const AdminForm = () => {
 
       createShotGlass(payload);
 
-      toast.success("Shot glass has been added successfully!");
+      toast.success(t("successToast"));
     } catch (error) {
       console.error("Error adding a shot glass", error);
-      toast.error("Uploading failed. Please try again.");
+      toast.error(t("errorToast"));
     } finally {
       complete();
       form.reset();

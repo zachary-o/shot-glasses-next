@@ -16,7 +16,8 @@
     "countriesNoResults": "No results found.",
     "countriesClear": "Clear",
     "showMoreBtn": "Show More",
-    "loadingBtn": "Loading..."
+    "loadingBtn": "Loading...",
+    "loadingError": "Failed to load items. Please try again. Error: "
   },
   "Admin": {
     "title": "Add a new shot glass",
@@ -33,7 +34,9 @@
     "country": "Country",
     "continent": "Continent",
     "submit": "Submit",
-    "submitting": "Submitting"
+    "submitting": "Submitting",
+    "successToast": "Shot glass has been added successfully!",
+    "errorToast": "Uploading failed. Please try again."
   },
   "Dashboard": {
     "title": "World statistics",
@@ -41,5 +44,16 @@
     "totalPerCountry": "Showing total shot glasses per country",
     "totalPerContinent": "Showing total shot glasses per continent"
   },
-  "ShotGlassCard": {}
+  "ShotGlassCard": {},
+  "Validation": {
+    "continentRequired": "Continent is required.",
+    "countryRequired": "Country is required.",
+    "imageRequired": "Image is required.",
+    "imageMaxSize": "Max image size is 5MB.",
+    "cityMinLength": "Name must be at least 2 characters long.",
+    "latitudeRequired": "Latitude is required.",
+    "latitudeInvalid": "Latitude must be a number between -90 and 90.",
+    "longitudeRequired": "Longitude is required.",
+    "longitudeInvalid": "Longitude must be a number between -180 and 180."
+  }
 }
