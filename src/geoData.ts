@@ -43,13 +43,6 @@ export const geoList: GeoType[] = [
     continentEng: "North America",
     continentUkr: "Північна Америка",
   },
-
-  {
-    nameEng: "Antarctica",
-    nameUkr: "Антарктида",
-    continentEng: "Antarctica",
-    continentUkr: "Антарктида",
-  },
   {
     nameEng: "Antigua and Barbuda",
     nameUkr: "Антигуа і Барбуда",
@@ -175,12 +168,6 @@ export const geoList: GeoType[] = [
     nameUkr: "Ботсвана",
     continentEng: "Africa",
     continentUkr: "Африка",
-  },
-  {
-    nameEng: "Bouvet Island",
-    nameUkr: "Острів Буве",
-    continentEng: "Antarctica",
-    continentUkr: "Антарктида",
   },
   {
     nameEng: "Brazil",
@@ -471,12 +458,6 @@ export const geoList: GeoType[] = [
     continentUkr: "Океанія",
   },
   {
-    nameEng: "French Southern Territories",
-    nameUkr: "Французькі Південні Території",
-    continentEng: "Antarctica",
-    continentUkr: "Антарктида",
-  },
-  {
     nameEng: "Gabon",
     nameUkr: "Габон",
     continentEng: "Africa",
@@ -577,12 +558,6 @@ export const geoList: GeoType[] = [
     nameUkr: "Гаїті",
     continentEng: "North America",
     continentUkr: "Північна Америка",
-  },
-  {
-    nameEng: "Heard Island and McDonald Islands",
-    nameUkr: "Острови Херд і Макдональд",
-    continentEng: "Antarctica",
-    continentUkr: "Антарктида",
   },
   {
     nameEng: "Holy See",

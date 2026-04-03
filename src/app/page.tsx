@@ -1,33 +1,38 @@
-import Filters from "@/components/shared/Filters";
-import SearchInput from "@/components/shared/SearchInput";
-import ShotGlassesList from "@/components/shared/ShotGlassesList";
-import SortDropdown from "@/components/shared/SortDropdown";
-import { Button } from "@/components/ui/button";
+import ClearFiltersButton from "@/components/shared/ClearFiltersButton"
+import Filters from "@/components/shared/Filters"
+import SearchInput from "@/components/shared/SearchInput"
+import ShotGlassesList from "@/components/shared/ShotGlassesList"
+import SortDropdown from "@/components/shared/SortDropdown"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { getAllShotGlasses } from "@/queries/getAllShotGlasses";
-import { ListFilter } from "lucide-react";
-import { getLocale } from "next-intl/server";
-import { Suspense } from "react";
+} from "@/components/ui/sheet"
+import { getAllShotGlasses } from "@/queries/getAllShotGlasses"
+import { ListFilter } from "lucide-react"
+import { getLocale, getTranslations } from "next-intl/server"
+import { Suspense } from "react"
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const locale = await getLocale();
-  const resolvedSearchParams = (await searchParams);
-  const items = await getAllShotGlasses(resolvedSearchParams, locale);
+  const locale = await getLocale()
+  const t = await getTranslations("HomePage")
+  const resolvedSearchParams = await searchParams
+  const items = await getAllShotGlasses(resolvedSearchParams, locale)
 
   return (
     <main className="flex flex-row gap-14 font-normal space-y-4">
       <Suspense>
-        <Filters className="hidden lg:flex" />
+        <div className="hidden lg:flex flex-col gap-4">
+          <Filters className="flex" />
+          <ClearFiltersButton className="flex w-[200px]" />
+        </div>
       </Suspense>
       <div className="flex-1">
         <div className="mb-4 flex items-center justify-between">
@@ -41,20 +46,22 @@ export default async function Home({
             <SheetContent className="bg-[#FFFDFA] w-[300px]" side="left">
               <SheetHeader aria-label="Sidebar Title">
                 <SheetTitle className="text-[var(--color-red)]">
-                  {/* {t("menuTitle")} */}
-                  Filters
+                  {t("filters")}
                 </SheetTitle>
               </SheetHeader>
-              <div className="p-4">
+              <div className="flex flex-col gap-4 p-4">
                 <Suspense>
                   <Filters className="flex lg:hidden" />
-                  <SortDropdown className="block md:hidden mt-4" /> 
+                  <SortDropdown className="block md:hidden" />
+                  <ClearFiltersButton className="flex lg:hidden w-[230px]" />
                 </Suspense>
               </div>
             </SheetContent>
           </Sheet>
-          <SearchInput />
-          <SortDropdown className="hidden md:block" />
+          <Suspense>
+            <SearchInput />
+            <SortDropdown className="hidden md:block" />
+          </Suspense>
         </div>
         <ShotGlassesList
           initialItems={items}
@@ -62,5 +69,5 @@ export default async function Home({
         />
       </div>
     </main>
-  );
+  )
 }

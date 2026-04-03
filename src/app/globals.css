@@ -15,6 +15,7 @@ html {
 
 .animated-button {
   background-color: var(--color-red);
+  color: #fff;
   position: relative;
   display: inline-flex;
   align-items: center;

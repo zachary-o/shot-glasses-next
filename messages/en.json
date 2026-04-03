@@ -17,7 +17,10 @@
     "countriesClear": "Clear",
     "showMoreBtn": "Show More",
     "loadingBtn": "Loading...",
-    "loadingError": "Failed to load items. Please try again. Error: "
+    "loadingError": "Failed to load items. Please try again. Error: ",
+    "noItemsFouns": "No shot glasses found 🤷‍♂️",
+    "clearFilters": "Clear filters",
+    "filters": "Filters"
   },
   "Admin": {
     "title": "Add a new shot glass",

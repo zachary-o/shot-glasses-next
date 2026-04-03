@@ -18,7 +18,7 @@ const ShotGlassesList = ({
   searchParams: GetSearchParams
 }) => {
   const loadingBar = useLoadingBar()
-  const t = useTranslations("HomePage");
+  const t = useTranslations("HomePage")
   const pageSize = 10
   const {
     data,
@@ -34,9 +34,7 @@ const ShotGlassesList = ({
   }, [data])
 
   if (error) {
-    toast.error(
-      `${t("loadingError")} ${error.message}`
-    )
+    toast.error(`${t("loadingError")} ${error.message}`)
   }
 
   useEffect(() => {
@@ -51,6 +49,14 @@ const ShotGlassesList = ({
 
   const handleShowMore = () => {
     fetchNextPage()
+  }
+
+  if (shotGlasses.length === 0 || !shotGlasses) {
+    return (
+      <div className="flex h-full items-center justify-center text-2xl font-bold">
+        {t("noItemsFouns")}
+      </div>
+    )
   }
 
   return (
@@ -72,7 +78,7 @@ const ShotGlassesList = ({
         </div>
       )}
     </>
-  );
+  )
 }
 
 export default ShotGlassesList

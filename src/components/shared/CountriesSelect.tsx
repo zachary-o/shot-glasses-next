@@ -25,26 +25,25 @@ import { forwardRef, useEffect, useState } from "react"
 import { Checkbox } from "../ui/checkbox"
 
 export const multiSelectVariants = cva(
-  "m-1 cursor-pointer bg-[var(--color-red)]"
+  "m-1 cursor-pointer bg-[var(--color-red)]",
 )
 
 export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
   (
     {
       isMulti,
-      value,
       options,
       onValueChange,
       maxCount = 3,
       modalPopover = false,
       className,
     },
-    ref
+    ref,
   ) => {
     const locale = useLocale()
-    const t = useTranslations("HomePage");
+    const t = useTranslations("HomePage")
     const searchParams = useSearchParams()
-    
+
     const [selectedValues, setSelectedValues] = useState<Country[]>([])
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
     const [search, setSearch] = useState("")
@@ -61,7 +60,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
       )
 
     const handleInputKeyDown = (
-      event: React.KeyboardEvent<HTMLInputElement>
+      event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
       if (event.key === "Enter") {
         setIsPopoverOpen(true)
@@ -73,23 +72,15 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     }
 
     useEffect(() => {
-      if (!value || (Array.isArray(value) && value.length === 0)) {
-        const selected = searchParams.get("continents")?.split(",") || []
-        const matched = options.filter((opt) => selected.includes(opt.nameEng))
-        setSelectedValues([...selectedValues, ...matched])
-      } else {
-        const normalizedValue = Array.isArray(value) ? value : [value]
-        const validValues = normalizedValue.filter(
-          (v) => v.nameEng || v.nameUkr
-        )
-        setSelectedValues(validValues)
-      }
-    }, [value, searchParams, options])
+      const selected = searchParams.get("countries")?.split(",") || []
+      const matched = options.filter((opt) => selected.includes(opt.nameEng))
+      setSelectedValues(matched)
+    }, [searchParams, options])
 
     const handleToggle = (option: Country) => {
       if (isMulti) {
         const newSelectedValues = selectedValues.some(
-          (item) => item.nameEng === option.nameEng
+          (item) => item.nameEng === option.nameEng,
         )
           ? selectedValues.filter((item) => item.nameEng !== option.nameEng)
           : [...selectedValues, option]
@@ -282,7 +273,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
         </PopoverContent>
       </Popover>
     )
-  }
+  },
 )
 
 CountriesSelect.displayName = "CountriesSelect"

@@ -22,7 +22,6 @@ const sortOptions = (locale: string) => {
 const SortDropdown = ({ className }: { className?: string }) => {
   const { updateParams } = useQueryFilters()
   const locale = useLocale()
-  
 
   const handleSortItems = (option: string) => {
     updateParams("sortBy", option ? [option] : undefined)

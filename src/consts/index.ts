@@ -19,3 +19,5 @@ export const BAR_CHART_COLORS = [
   "#4a0e0e",
   "#2d1b69",
 ];
+
+export const FILTER_KEYS = ["continents", "countries", "search", "sortBy"];

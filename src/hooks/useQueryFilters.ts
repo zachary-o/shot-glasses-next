@@ -16,11 +16,13 @@ export const useQueryFilters = () => {
       delete current[key]
     }
 
+    delete current["skip"]
+
     const queryString = qs.stringify(current, {
       arrayFormat: "comma",
       encode: false,
     })
-    
+
     router.push(`?${queryString}`)
   }
 

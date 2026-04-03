@@ -7,17 +7,17 @@ import { Continent, Country } from "@/types"
 import ContinentsCheckboxGroup from "./ContinentsCheckboxGroup"
 import { CountriesSelect } from "./CountriesSelect"
 
-const Filters = ({className}: {className: string}) => {
+const Filters = ({ className }: { className: string }) => {
   const { updateParams } = useQueryFilters()
 
   const handleContinentChange = (newSelected: Continent[]) => {
     const continentsEng = newSelected.map((c) => c.continentEng)
-    updateParams("continents", continentsEng);
+    updateParams("continents", continentsEng)
   }
 
   const handleCountryChange = (newSelected: Country[]) => {
     const countriesEng = newSelected.map((c) => c.nameEng)
-    updateParams("countries", countriesEng);
+    updateParams("countries", countriesEng)
   }
 
   return (
