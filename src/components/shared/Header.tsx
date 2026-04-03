@@ -17,8 +17,6 @@ import { useState, useTransition } from "react";
 import { setUserLocale } from "../../app/services/locale";
 import { Button } from "../ui/button";
 
-
-
 const Header = ({ initialLang }: { initialLang: Locale }) => {
   const t = useTranslations("Header");
   const { data: session } = useSession();

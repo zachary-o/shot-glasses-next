@@ -9,18 +9,37 @@
     "menuTitle": "Навігація по сайту"
   },
   "HomePage": {
-    "title": "залупа"
+    "searchPlaceholder": "Пошук...",
+    "countriesPlaceholderMulti": "Виберіть країни",
+    "countriesPlaceholderSingle": "Виберіть країну",
+    "countriesDropdownClose": "Закрити",
+    "countriesNoResults": "Нічого не знайдено.",
+    "countriesClear": "Очистити",
+    "showMoreBtn": "Показати Більше",
+    "loadingBtn": "Завантажується..."
   },
   "Admin": {
     "title": "Додати новеньку рюмочку",
     "dragAccept": "Давай братішка, ти можеш!",
     "dragRejected": "Мені потрібна картинка, братішка!",
     "dragNdrop": "Перетягніть зображення сюди або\n",
-    "dragNdropSub": "натисніть, щоб вибрати файл"
+    "dragNdropSub": "натисніть, щоб вибрати файл",
+    "additionalInfo": "Додаткова інфа",
+    "cityEng": "Місто англійською",
+    "cityUkr": "Місто українською",
+    "latitude": "Широта",
+    "longitude": "Довгота",
+    "selectDate": "Виберіть дату",
+    "country": "Країна",
+    "continent": "Континент",
+    "submit": "Надіслати",
+    "submitting": "Надсилається"
   },
   "Dashboard": {
     "title": "Статистика по світу",
-    "total": "Всього"
+    "total": "Всього",
+    "totalPerCountry": "Показ загальної кількості рюмок за країнами",
+    "totalPerContinent": "Показ загальної кількості рюмок за континентами"
   },
   "ShotGlassCard": {}
 }

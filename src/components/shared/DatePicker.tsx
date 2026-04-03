@@ -1,9 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
-import { enUS } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -12,7 +8,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn, localeMap } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { format } from "date-fns";
+import { enUS } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 export function DatePicker({
   value,
@@ -22,7 +21,9 @@ export function DatePicker({
   onValueChange: (value: Date) => void;
 }) {
   const localeStr = useLocale();
+  const t = useTranslations("Admin");
   const dateFnsLocale = localeMap[localeStr] ?? enUS;
+  
   const handleDateChange = (value: Date) => {
     onValueChange(value);
   };
@@ -39,10 +40,10 @@ export function DatePicker({
         >
           <CalendarIcon className="text-muted-foreground hover:text-muted-foreground" />
           {value ? (
-            format(value, "PPP")
+            format(value, "PPP", { locale: dateFnsLocale })
           ) : (
             <span className="text-muted-foreground hover:text-muted-foreground">
-              Pick a date
+              {t("selectDate")}
             </span>
           )}
         </Button>

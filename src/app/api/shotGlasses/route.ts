@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
         imageUrl: data.imageUrl,
       },
     });
-
+    revalidatePath("/dashboard")
     return NextResponse.json(shotGlass);
   } catch (error) {
     console.error("Error creating ShotGlass:", error);

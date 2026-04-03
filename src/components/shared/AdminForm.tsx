@@ -13,6 +13,7 @@ import { continentsArr, geoList } from "@/geoData";
 import { useShotGlassMutations } from "@/hooks/useShotGlassMutations";
 import { shotGlassFormSchema } from "@/schemas/shotGlassSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { useLoadingBar } from "react-top-loading-bar";
 import { toast } from "sonner";
@@ -23,6 +24,7 @@ import { CountriesSelect } from "./CountriesSelect";
 import { DatePicker } from "./DatePicker";
 
 const AdminForm = () => {
+  const t = useTranslations("Admin");
   const { createShotGlass, isCreating } = useShotGlassMutations();
   const { start, complete } = useLoadingBar();
   
@@ -95,12 +97,12 @@ const AdminForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <FormField
           control={form.control}
           name="image"
           render={({ field }) => (
-            <FormItem className="mb-4">
+            <FormItem className="lg:col-span-2">
               <FormControl>
                 <PictureUploader
                   value={field.value}
@@ -111,124 +113,120 @@ const AdminForm = () => {
             </FormItem>
           )}
         />
-        <h4 className="mb-2 font-bold text-[var(--color-black)]">
-          Additional info
+        <h4 className="lg:col-span-2 font-bold text-[var(--color-black)]">
+          {t("additionalInfo")}
         </h4>
-        <div className="flex flex-col gap-4 mb-4">
-          <FormField
-            control={form.control}
-            name="cityEng"
-            render={({ field }) => (
+        <FormField
+          control={form.control}
+          name="cityEng"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  className="text-sm"
+                  id="cityEng"
+                  placeholder={t("cityEng")}
+                  type="text"
+                  autoComplete="cityEng"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="cityUkr"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  className="text-sm"
+                  id="cityUkr"
+                  placeholder={t("cityUkr")}
+                  type="text"
+                  autoComplete="cityUkr"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="latitude"
+          render={({ field }) => {
+            const { onChange, ...rest } = field;
+            return (
               <FormItem>
                 <FormControl>
                   <Input
                     className="text-sm"
-                    id="cityEng"
-                    placeholder="City in English"
+                    id="latitude"
+                    placeholder={t("latitude")}
                     type="text"
-                    autoComplete="cityEng"
-                    {...field}
+                    inputMode="decimal"
+                    {...rest}
+                    onChange={(e) => onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="cityUkr"
-            render={({ field }) => (
+            );
+          }}
+        />
+        <FormField
+          control={form.control}
+          name="longitude"
+          render={({ field }) => {
+            const { onChange, ...rest } = field;
+            return (
               <FormItem>
                 <FormControl>
                   <Input
                     className="text-sm"
-                    id="cityUkr"
-                    placeholder="City in Ukrainian"
+                    id="longitude"
+                    placeholder={t("longitude")}
                     type="text"
-                    autoComplete="cityUkr"
-                    {...field}
+                    inputMode="decimal"
+                    {...rest}
+                    onChange={(e) => onChange(e.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="latitude"
-            render={({ field }) => {
-              const { onChange, ...rest } = field;
-              return (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="text-sm"
-                      id="latitude"
-                      placeholder="Latitude"
-                      type="text"
-                      inputMode="decimal"
-                      {...rest}
-                      onChange={(e) => onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="longitude"
-            render={({ field }) => {
-              const { onChange, ...rest } = field;
-              return (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="text-sm"
-                      id="longitude"
-                      placeholder="Longitude"
-                      type="text"
-                      inputMode="decimal"
-                      {...rest}
-                      onChange={(e) => onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="purchaseDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <DatePicker
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <h4 className="mb-2 font-bold text-[var(--color-black)]">Country</h4>
+            );
+          }}
+        />
+        <FormField
+          control={form.control}
+          name="purchaseDate"
+          render={({ field }) => (
+            <FormItem className="lg:col-span-2">
+              <FormControl>
+                <DatePicker
+                  value={field.value}
+                  onValueChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <h4 className="lg:col-span-2 font-bold text-[var(--color-black)]">{t("country")}</h4>
         <FormField
           control={form.control}
           name="country"
           render={({ field }) => (
-            <FormItem className="mb-4">
+            <FormItem className="lg:col-span-2">
               <FormControl>
                 <CountriesSelect
                   isMulti={false}
                   options={geoList}
                   value={field.value}
                   onValueChange={field.onChange}
-                  placeholder="Select country"
                   maxCount={3}
                 />
               </FormControl>
@@ -236,12 +234,12 @@ const AdminForm = () => {
             </FormItem>
           )}
         />
-        <h4 className="mb-2 font-bold text-[var(--color-black)]">Continent</h4>
+        <h4 className="lg:col-span-2 font-bold text-[var(--color-black)]">{t("continent")}</h4>
         <FormField
           control={form.control}
           name="continent"
           render={({ field }) => (
-            <FormItem className="mb-4">
+            <FormItem className="lg:col-span-2">
               <FormControl>
                 <ContinentsCheckboxGroup
                   isMulti={false}
@@ -255,10 +253,10 @@ const AdminForm = () => {
           )}
         />
         <Button
-          className="w-full mb-4 group animated-button"
+          className="w-full group animated-button lg:col-span-2"
           disabled={isCreating}
         >
-          {isCreating ? "Submitting..." : "Submit"}
+          {isCreating ? t("submitting") : t("submit")}
         </Button>
       </form>
     </Form>

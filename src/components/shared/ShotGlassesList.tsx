@@ -3,6 +3,7 @@
 import { useShotGlassesData } from "@/hooks/useShotGlassesData"
 import { GetSearchParams } from "@/types"
 import { ShotGlass } from "@prisma/client"
+import { useTranslations } from "next-intl"
 import { useEffect, useMemo } from "react"
 import { useLoadingBar } from "react-top-loading-bar"
 import { toast } from "sonner"
@@ -17,6 +18,7 @@ const ShotGlassesList = ({
   searchParams: GetSearchParams
 }) => {
   const loadingBar = useLoadingBar()
+  const t = useTranslations("HomePage");
   const pageSize = 10
   const {
     data,
@@ -65,7 +67,7 @@ const ShotGlassesList = ({
             disabled={isLoading || isFetchingNextPage}
             className="animated-button"
           >
-            {isFetchingNextPage ? "Loading..." : "Show More"}
+            {isFetchingNextPage ? t("loadingBtn") : t("showMoreBtn")}
           </Button>
         </div>
       )}

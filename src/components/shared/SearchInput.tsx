@@ -3,11 +3,13 @@
 import { Input } from "@/components/ui/input"
 import { useQueryFilters } from "@/hooks/useQueryFilters"
 import { Search } from "lucide-react"
+import { useTranslations } from "next-intl"
 import React, { useState } from "react"
 
 const SearchInput = () => {
   const { updateParams } = useQueryFilters()
   const [searchQuery, setSearchQuery] = useState("")
+  const t = useTranslations("HomePage");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -30,7 +32,7 @@ const SearchInput = () => {
       <Input
         className="pl-10"
         type="search"
-        placeholder="Search..."
+        placeholder={t("searchPlaceholder")}
         value={searchQuery}
         onChange={handleSearch}
         onKeyDown={handleKeyDown}

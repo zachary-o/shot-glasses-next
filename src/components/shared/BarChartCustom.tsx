@@ -10,7 +10,7 @@ import { BAR_CHART_COLORS } from "@/consts";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChartDataItem, CountryAccumulator } from "@/types";
 import { ShotGlass } from "@prisma/client";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -23,6 +23,7 @@ const chartConfig = {
 
 export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
   const locale = useLocale();
+  const t = useTranslations("Dashboard");
   const { width } = useIsMobile();
   let fontSize
   if (width > 1024) {
@@ -65,7 +66,7 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Showing total shot glasses per country</CardTitle>
+        <CardTitle>{t("totalPerCountry")}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

@@ -35,7 +35,6 @@ const Filters = ({className}: {className: string}) => {
         onValueChange={(newSelected) =>
           handleCountryChange(newSelected as Country[])
         }
-        placeholder="Select options"
         maxCount={3}
         className="w-[230px] lg:w-[200px]"
       />

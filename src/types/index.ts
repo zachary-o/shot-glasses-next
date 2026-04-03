@@ -20,7 +20,6 @@ export interface MultiSelectProps
   value?: Country | Country[];
   onValueChange: (value: Country | Country[] | string[]) => void;
   defaultValue?: string[];
-  placeholder?: string;
   maxCount?: number;
   modalPopover?: boolean;
   asChild?: boolean;
