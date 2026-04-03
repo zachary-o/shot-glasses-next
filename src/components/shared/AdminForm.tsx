@@ -92,9 +92,6 @@ const AdminForm = () => {
     }
   }
 
-  const watchedValues = form.watch();
-  console.log("Watched values:", watchedValues);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
