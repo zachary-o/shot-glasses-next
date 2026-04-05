@@ -1,30 +1,30 @@
-"use client";
+"use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-} from "@/components/ui/chart";
-import { BAR_CHART_COLORS } from "@/consts";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { ChartDataItem, CountryAccumulator } from "@/types";
-import { ShotGlass } from "@prisma/client";
-import { useLocale, useTranslations } from "next-intl";
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+} from "@/components/ui/chart"
+import { BAR_CHART_COLORS } from "@/consts"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { ChartDataItem, CountryAccumulator } from "@/types"
+import { ShotGlass } from "@prisma/client"
+import { useLocale, useTranslations } from "next-intl"
+import { useMemo } from "react"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 const chartConfig = {
   count: {
     label: "Country",
     color: "var(--color-red)",
   },
-} satisfies ChartConfig;
+} satisfies ChartConfig
 
 export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
-  const locale = useLocale();
-  const t = useTranslations("Dashboard");
-  const { width } = useIsMobile();
+  const locale = useLocale()
+  const t = useTranslations("Dashboard")
+  const { width } = useIsMobile()
   let fontSize
   if (width > 1024) {
     fontSize = 13
@@ -40,17 +40,17 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
             nameEng: curr.countryEng,
             nameUkr: curr.countryUkr,
             count: 1,
-          };
+          }
         } else {
           acc[curr.countryEng] = {
             ...acc[curr.countryEng],
             count: acc[curr.countryEng].count + 1,
-          };
+          }
         }
-        return acc;
+        return acc
       },
-      {} as CountryAccumulator
-    );
+      {} as CountryAccumulator,
+    )
 
     const topTenCountriesByCount = Object.values(countsByCountry)
       .sort((a, b) => b.count - a.count)
@@ -58,10 +58,10 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
       .map((item, index) => ({
         ...item,
         fill: BAR_CHART_COLORS[index % BAR_CHART_COLORS.length],
-      }));
+      }))
 
-    return topTenCountriesByCount;
-  }, [items]);
+    return topTenCountriesByCount
+  }, [items])
 
   return (
     <Card className="flex-1">
@@ -91,15 +91,15 @@ export default function BarChartCustom({ items }: { items: ShotGlass[] }) {
                     <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
                       <p className="font-medium">{`${label}: ${payload[0].value}`}</p>
                     </div>
-                  );
+                  )
                 }
-                return null;
+                return null
               }}
             />
-            <Bar dataKey="count" radius={8} />
+            <Bar dataKey="count" radius={[8, 8, 0, 0]} maxBarSize={30} />
           </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  );
+  )
 }

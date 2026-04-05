@@ -32,6 +32,7 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
   (
     {
       isMulti,
+      value,
       options,
       onValueChange,
       maxCount = 3,
@@ -72,10 +73,16 @@ export const CountriesSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
     }
 
     useEffect(() => {
-      const selected = searchParams.get("countries")?.split(",") || []
-      const matched = options.filter((opt) => selected.includes(opt.nameEng))
-      setSelectedValues(matched)
-    }, [searchParams, options])
+      if (value !== undefined) {
+        const normalized = Array.isArray(value) ? value : value ? [value] : []
+        const valid = normalized.filter((v) => v.nameEng !== "")
+        setSelectedValues(valid)
+      } else {
+        const selected = searchParams.get("countries")?.split(",") || []
+        const matched = options.filter((opt) => selected.includes(opt.nameEng))
+        setSelectedValues(matched)
+      }
+    }, [value, searchParams, options])
 
     const handleToggle = (option: Country) => {
       if (isMulti) {
